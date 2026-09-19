@@ -1,0 +1,221 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Network, 
+  Brain, 
+  History, 
+  Sparkles, 
+  BookOpen, 
+  Layers, 
+  CheckCircle2,
+  Filter
+} from 'lucide-react';
+
+export default function KnowledgeGraphView() {
+  const [graphData, setGraphData] = useState(null);
+  const [selectedType, setSelectedType] = useState('ALL');
+  const [loading, setLoading] = useState(false);
+
+  const fetchGraph = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/knowledge-graph');
+      const data = await res.json();
+      setGraphData(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGraph();
+  }, []);
+
+  const nodes = graphData?.nodes || [];
+  const edges = graphData?.edges || [];
+  const insights = graphData?.insights || [];
+
+  const nodeColor = (type) => {
+    switch (type) {
+      case 'Field': return 'var(--emerald-400)';
+      case 'Season': return 'var(--cyan-400)';
+      case 'Crop': return 'var(--lime-400)';
+      case 'PestEvent': return 'var(--rose-500)';
+      case 'Intervention': return 'var(--amber-400)';
+      case 'Outcome': return 'var(--purple-400)';
+      default: return '#fff';
+    }
+  };
+
+  const filteredNodes = selectedType === 'ALL' ? nodes : nodes.filter(n => n.type === selectedType);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      
+      {/* Header Banner */}
+      <div className="glass-panel" style={{ padding: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Brain size={22} color="var(--purple-400)" />
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+                Farm Memory & Seasonal Knowledge Graph (Module 6.4.13)
+              </h2>
+            </div>
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+              Retains multi-season knowledge linking fields, crops, interventions, and yield outcomes for continuous AI learning.
+            </p>
+          </div>
+
+          {/* Node Filter */}
+          <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+            {['ALL', 'Field', 'Crop', 'PestEvent', 'Intervention', 'Outcome'].map(t => (
+              <button
+                key={t}
+                onClick={() => setSelectedType(t)}
+                className={`btn ${selectedType === t ? 'btn-primary' : 'btn-secondary'}`}
+                style={{ fontSize: '0.78rem', padding: '5px 10px' }}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Summary Pill Bar */}
+        {graphData?.summary && (
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '16px' }}>
+            <span className="badge badge-emerald">
+              {graphData.summary.total_fields_tracked} Fields Tracked
+            </span>
+            <span className="badge badge-cyan">
+              {graphData.summary.seasons_recorded} Seasons Logged
+            </span>
+            <span className="badge badge-purple">
+              {graphData.summary.crops_logged} Crop Rotations
+            </span>
+            <span className="badge badge-amber">
+              Historical Gain: {graphData.summary.historical_yield_gain_avg}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* Visual Graph View & Historical Insights */}
+      <div className="grid-cols-2">
+        
+        {/* Left: Interactive Node Map */}
+        <div className="glass-panel" style={{ padding: '24px' }}>
+          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '16px' }}>
+            Graph Topology & Entities ({filteredNodes.length} Nodes)
+          </h3>
+
+          <div style={{ 
+            height: '380px', 
+            background: 'rgba(10, 15, 29, 0.85)', 
+            borderRadius: 'var(--radius-sm)', 
+            border: '1px solid var(--border-glass)',
+            padding: '20px',
+            overflowY: 'auto',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '10px',
+            alignContent: 'flex-start'
+          }}>
+            {filteredNodes.map(node => (
+              <div 
+                key={node.id}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  border: `1px solid ${nodeColor(node.type)}`,
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '10px 14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: `0 0 10px rgba(0, 0, 0, 0.4)`
+                }}
+              >
+                <div style={{ 
+                  width: '10px', 
+                  height: '10px', 
+                  borderRadius: '50%', 
+                  background: nodeColor(node.type),
+                  boxShadow: `0 0 8px ${nodeColor(node.type)}`
+                }} />
+                <div>
+                  <strong style={{ fontSize: '0.84rem', color: '#fff', display: 'block' }}>
+                    {node.label}
+                  </strong>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
+                    Type: {node.type}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '12px' }}>
+            <span>Green: Fields</span>
+            <span>Lime: Crops</span>
+            <span>Red: Pests</span>
+            <span>Amber: Interventions</span>
+            <span>Purple: Outcomes</span>
+          </div>
+        </div>
+
+        {/* Right: Cross-Season Experiential Lessons */}
+        <div className="glass-panel" style={{ padding: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+            <Sparkles size={18} color="var(--amber-400)" />
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
+              Historical Lessons Learned (Multi-Season Intelligence)
+            </h3>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            {insights.map(ins => (
+              <div 
+                key={ins.insight_id}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.025)',
+                  border: '1px solid var(--border-glass)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '16px'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <strong style={{ fontSize: '0.94rem', color: '#fff' }}>
+                    {ins.title}
+                  </strong>
+                  <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
+                    {ins.category}
+                  </span>
+                </div>
+
+                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.4, marginBottom: '10px' }}>
+                  {ins.lesson_learned}
+                </p>
+
+                <div style={{ 
+                  background: 'rgba(16, 185, 129, 0.08)', 
+                  borderLeft: '3px solid var(--emerald-400)', 
+                  padding: '8px 12px', 
+                  borderRadius: '0 var(--radius-sm) var(--radius-sm) 0',
+                  fontSize: '0.78rem',
+                  color: 'var(--emerald-400)'
+                }}>
+                  <strong>Autonomous Actionable Rule:</strong> {ins.actionable_rule}
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
