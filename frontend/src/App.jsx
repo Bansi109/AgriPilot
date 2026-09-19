@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import HomePage from './components/HomePage';
+import LoginPage from './components/LoginPage';
 import OverviewDashboard from './components/OverviewDashboard';
 import DigitalTwinMap from './components/DigitalTwinMap';
 import CropLifecycleRoadmap from './components/CropLifecycleRoadmap';
@@ -30,6 +32,21 @@ import {
 } from 'lucide-react';
 
 export default function App() {
+  // Navigation View: 'home' | 'login' | 'dashboard'
+  const [currentView, setCurrentView] = useState(() => {
+    return localStorage.getItem('agripilot_view') || 'home';
+  });
+
+  // Current Logged-in User
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('agripilot_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedFieldId, setSelectedFieldId] = useState('FIELD-NORTH-01');
   const [language, setLanguage] = useState(() => localStorage.getItem('agripilot_lang') || 'Hindi');
@@ -51,6 +68,11 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('agripilot_lang', language);
   }, [language]);
+
+  // Sync view with localStorage
+  useEffect(() => {
+    localStorage.setItem('agripilot_view', currentView);
+  }, [currentView]);
 
   const t = translations[language] || translations.English;
 
@@ -100,6 +122,21 @@ export default function App() {
     };
   }, []);
 
+  const handleLogin = (user) => {
+    setCurrentUser(user);
+    localStorage.setItem('agripilot_user', JSON.stringify(user));
+    if (user.field_id && user.field_id !== 'ALL-ZONES') {
+      setSelectedFieldId(user.field_id);
+    }
+    setCurrentView('dashboard');
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('agripilot_user');
+    setCurrentView('home');
+  };
+
   const handleRunDecisionCycle = async () => {
     setCycleLoading(true);
     try {
@@ -108,7 +145,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           field_id: selectedFieldId,
-          farmer_phone: "+91 98765 43210",
+          farmer_phone: currentUser?.phone || "+91 98765 43210",
           preferred_language: language
         })
       });
@@ -156,6 +193,40 @@ export default function App() {
     { id: 'omnichannel', label: t.tab_omni, icon: <Radio size={16} /> },
   ];
 
+  // VIEW 1: HOME PAGE
+  if (currentView === 'home') {
+    return (
+      <div className="app-container">
+        <HomePage 
+          onNavigate={setCurrentView}
+          language={language}
+          setLanguage={setLanguage}
+          theme={theme}
+          setTheme={setTheme}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+        />
+      </div>
+    );
+  }
+
+  // VIEW 2: LOGIN PROCEDURE
+  if (currentView === 'login') {
+    return (
+      <div className="app-container">
+        <LoginPage 
+          onLogin={handleLogin}
+          onNavigate={setCurrentView}
+          language={language}
+          setLanguage={setLanguage}
+          theme={theme}
+          setTheme={setTheme}
+        />
+      </div>
+    );
+  }
+
+  // VIEW 3: MAIN DASHBOARD
   return (
     <div className="app-container">
       {/* Top Navbar Header */}
@@ -171,6 +242,9 @@ export default function App() {
         cycleLoading={cycleLoading}
         activeIncidentsCount={2}
         isWsConnected={isWsConnected}
+        currentUser={currentUser}
+        onNavigate={setCurrentView}
+        onLogout={handleLogout}
       />
 
       {/* Navigation Tab Bar */}

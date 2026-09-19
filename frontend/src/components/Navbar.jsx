@@ -7,7 +7,11 @@ import {
   RefreshCw,
   Layers,
   Sun,
-  Moon
+  Moon,
+  Home,
+  LogOut,
+  LogIn,
+  User
 } from 'lucide-react';
 import { translations } from '../i18n/translations';
 
@@ -22,29 +26,40 @@ export default function Navbar({
   onRunCycle, 
   cycleLoading, 
   activeIncidentsCount, 
-  isWsConnected 
+  isWsConnected,
+  currentUser,
+  onNavigate,
+  onLogout
 }) {
   const t = translations[language] || translations.English;
 
   return (
     <header className="glass-panel" style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-      {/* Brand */}
+      {/* Brand & Home Shortcut */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div style={{ 
-          width: '44px', 
-          height: '44px', 
-          borderRadius: '12px', 
-          background: 'linear-gradient(135deg, #10b981, #059669)', 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)'
-        }}>
+        <div 
+          onClick={() => onNavigate && onNavigate('home')}
+          style={{ 
+            width: '44px', 
+            height: '44px', 
+            borderRadius: '12px', 
+            background: 'linear-gradient(135deg, var(--emerald-500), var(--cyan-500))', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)',
+            cursor: 'pointer'
+          }}
+          title={t.home_nav}
+        >
           <Sprout size={26} color="#ffffff" />
         </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
+            <h1 
+              onClick={() => onNavigate && onNavigate('home')}
+              style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)', cursor: 'pointer' }}
+            >
               Agri<span style={{ color: 'var(--emerald-500)' }}>Pilot</span>
             </h1>
             <span className="badge badge-emerald" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
@@ -60,8 +75,22 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Center Controls: Field Selector, Theme & Language */}
+      {/* Center Controls: Field Selector, Home Link, Theme & Language */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        
+        {/* Home Button */}
+        {onNavigate && (
+          <button
+            onClick={() => onNavigate('home')}
+            className="btn btn-secondary"
+            style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+            title={t.home_nav}
+          >
+            <Home size={15} color="var(--emerald-400)" />
+            <span>{t.home_nav}</span>
+          </button>
+        )}
+
         {/* Field Picker */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <Layers size={16} color="var(--text-muted)" />
@@ -69,7 +98,7 @@ export default function Navbar({
             value={selectedField} 
             onChange={(e) => setSelectedField(e.target.value)}
             className="select-control"
-            style={{ minWidth: '220px', padding: '7px 12px', fontSize: '0.84rem' }}
+            style={{ minWidth: '200px', padding: '7px 12px', fontSize: '0.84rem' }}
           >
             {fields.map(f => (
               <option key={f.field_id} value={f.field_id}>
@@ -147,13 +176,57 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Right Action: Run Decision Cycle */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Right Action: User Profile & Run Decision Cycle */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+        
+        {/* User Info / Logout Button */}
+        {currentUser ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 10px', background: 'var(--bg-inner-box)', border: '1px solid var(--border-glass)', borderRadius: 'var(--radius-sm)' }}>
+            <span style={{ fontSize: '1.15rem' }}>{currentUser.avatar || '👨‍🌾'}</span>
+            <div style={{ textAlign: 'left', lineHeight: 1.2 }}>
+              <strong style={{ fontSize: '0.8rem', color: 'var(--text-primary)', display: 'block' }}>
+                {currentUser.name}
+              </strong>
+              <span style={{ fontSize: '0.68rem', color: 'var(--emerald-400)' }}>
+                {currentUser.role}
+              </span>
+            </div>
+            {onLogout && (
+              <button
+                onClick={onLogout}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--rose-500)',
+                  cursor: 'pointer',
+                  padding: '4px',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}
+                title={t.logout_btn}
+              >
+                <LogOut size={15} />
+              </button>
+            )}
+          </div>
+        ) : (
+          onNavigate && (
+            <button
+              onClick={() => onNavigate('login')}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+            >
+              <LogIn size={15} />
+              <span>{t.login_btn}</span>
+            </button>
+          )
+        )}
+
         <button 
           onClick={onRunCycle} 
           disabled={cycleLoading}
           className="btn btn-primary"
-          style={{ minWidth: '200px' }}
+          style={{ minWidth: '180px' }}
         >
           {cycleLoading ? (
             <>
