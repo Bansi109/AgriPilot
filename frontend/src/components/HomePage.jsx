@@ -122,21 +122,20 @@ export default function HomePage({
             width: '42px',
             height: '42px',
             borderRadius: '12px',
-            background: 'linear-gradient(135deg, var(--emerald-500), var(--cyan-500))',
+            overflow: 'hidden',
+            border: '2px solid var(--emerald-400)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)'
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)',
+            background: 'var(--card-bg)'
           }}>
-            <Sprout size={24} color="#fff" />
+            <img src="/logo.png" alt="AgriPilot" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.25rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
                 Agri<span style={{ color: 'var(--emerald-400)' }}>Pilot</span>
-              </span>
-              <span className="badge badge-emerald" style={{ fontSize: '0.65rem', padding: '2px 8px' }}>
-                PS-6 AI
               </span>
             </div>
             <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block' }}>

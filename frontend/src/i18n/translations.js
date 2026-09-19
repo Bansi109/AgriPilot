@@ -31,7 +31,7 @@ export const translations = {
     tab_omni: "IoT & SMS Dispatch",
 
     // Overview
-    closed_loop_title: "Closed-Loop Autonomous Decision Cycle (Section 6.8)",
+    closed_loop_title: "Closed-Loop Autonomous Decision Cycle",
     cycle_completed: "Cycle Completed",
     view_memory_graph: "View Memory Graph",
     soil_moisture: "Soil Moisture",
@@ -289,7 +289,7 @@ export const translations = {
     tab_omni: "IoT व SMS डिस्पैच",
 
     // Overview
-    closed_loop_title: "स्वायत्त क्लोज्ड-लूप निर्णय चक्र (खंड 6.8)",
+    closed_loop_title: "स्वायत्त क्लोज्ड-लूप निर्णय चक्र",
     cycle_completed: "निर्णय चक्र संपन्न",
     view_memory_graph: "मेमोरी ग्राफ देखें",
     soil_moisture: "मिट्टी की नमी",

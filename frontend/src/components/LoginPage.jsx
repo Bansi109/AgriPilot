@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sprout, 
   Smartphone, 
@@ -12,7 +12,11 @@ import {
   Moon,
   Sparkles,
   Lock,
-  Phone
+  Phone,
+  MessageSquare,
+  AlertCircle,
+  Clock,
+  Radio
 } from 'lucide-react';
 import { translations } from '../i18n/translations';
 
@@ -29,47 +33,111 @@ export default function LoginPage({
   const [activeTab, setActiveTab] = useState('otp'); // 'otp' | 'id'
   const [mobile, setMobile] = useState('9876543210');
   const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
+  const [otpCode, setOtpCode] = useState(''); // Always starts empty for genuine entry!
   const [kisanId, setKisanId] = useState('KISAN-INDORE-2026');
   const [password, setPassword] = useState('agripilot123');
   const [selectedRole, setSelectedRole] = useState('Farmer'); // 'Farmer' | 'Extension' | 'Agronomist'
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  
+  // Real-time Gateway SMS Notification Toast State
+  const [smsToast, setSmsToast] = useState(null);
+  
+  // Countdown Timer for Resend OTP (60s)
+  const [countdown, setCountdown] = useState(0);
 
-  const handleSendOtp = (e) => {
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  // Request genuine OTP from Backend API
+  const handleSendOtp = async (e) => {
     e?.preventDefault();
     if (!mobile || mobile.length < 10) {
       setErrorMsg(language === 'Hindi' ? 'कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें' : 'Please enter a valid 10-digit mobile number');
       return;
     }
     setErrorMsg('');
+    setSuccessMsg('');
     setLoading(true);
-    setTimeout(() => {
-      setOtpSent(true);
-      setOtpCode('123456'); // Pre-fill simulated OTP for effortless testing
+
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: mobile,
+          role: selectedRole,
+          language: language
+        })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setErrorMsg(data.message || 'Failed to send OTP. Please try again.');
+      } else {
+        setOtpSent(true);
+        setOtpCode(''); // Keep empty so user inputs the genuine received code
+        setCountdown(60);
+        setSuccessMsg(data.message);
+
+        // Display real SMS Dispatch Notification Toast
+        setSmsToast({
+          recipient: data.recipient_masked,
+          smsText: data.sms_text,
+          gateway: data.gateway_status,
+          deliveredToCellular: data.delivered_to_cellular,
+          otpPreview: data.dev_otp_preview
+        });
+      }
+    } catch (err) {
+      setErrorMsg('Network error connecting to SMS authentication service.');
+    } finally {
       setLoading(false);
-    }, 450);
+    }
   };
 
-  const handleVerifyOtp = (e) => {
+  // Verify genuine OTP with Backend API
+  const handleVerifyOtp = async (e) => {
     e?.preventDefault();
     if (!otpCode || otpCode.length < 6) {
       setErrorMsg(language === 'Hindi' ? 'कृपया 6 अंकों का OTP दर्ज करें' : 'Please enter the 6-digit OTP');
       return;
     }
 
-    const userData = {
-      name: selectedRole === 'Agronomist' ? 'Dr. R. K. Verma' : 'Ramesh Patel',
-      role: selectedRole === 'Agronomist' ? 'Senior Agronomist (ICAR)' : 'Progressive Farmer',
-      phone: `+91 ${mobile}`,
-      avatar: selectedRole === 'Agronomist' ? '🔬' : '👨‍🌾',
-      field_id: 'FIELD-NORTH-01',
-      region: 'Indore (MP)'
-    };
+    setErrorMsg('');
+    setLoading(true);
 
-    onLogin(userData);
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: mobile,
+          otp: otpCode,
+          role: selectedRole
+        })
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setErrorMsg(data.message || 'OTP verification failed.');
+      } else {
+        onLogin(data.user);
+      }
+    } catch (err) {
+      setErrorMsg('Failed to verify OTP with server.');
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Kisan ID Login
   const handleIdLogin = (e) => {
     e?.preventDefault();
     if (!kisanId) {
@@ -90,26 +158,14 @@ export default function LoginPage({
     onLogin(userData);
   };
 
-  const handleQuickDemo = (role) => {
-    if (role === 'farmer') {
-      onLogin({
-        name: 'Ramesh Patel',
-        role: 'Progressive Farmer',
-        phone: '+91 98765 43210',
-        avatar: '👨‍🌾',
-        field_id: 'FIELD-NORTH-01',
-        region: 'Indore (Madhya Pradesh)'
-      });
-    } else {
-      onLogin({
-        name: 'Dr. R. K. Verma',
-        role: 'Senior Agronomist (ICAR)',
-        phone: '+91 94250 88712',
-        avatar: '🔬',
-        field_id: 'ALL-ZONES',
-        region: 'National Agricultural Extension'
-      });
-    }
+  const handleQuickSelectContact = (phone, role) => {
+    setMobile(phone);
+    setSelectedRole(role);
+    setOtpSent(false);
+    setOtpCode('');
+    setErrorMsg('');
+    setSuccessMsg('');
+    setSmsToast(null);
   };
 
   return (
@@ -119,8 +175,67 @@ export default function LoginPage({
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: '24px 16px'
+      padding: '24px 16px',
+      position: 'relative'
     }}>
+      
+      {/* Real-time SMS Dispatch Toast Notification Banner */}
+      {smsToast && (
+        <div style={{
+          position: 'fixed',
+          top: '20px',
+          maxWidth: '520px',
+          width: '92%',
+          zIndex: 999,
+          background: 'var(--card-bg)',
+          border: '1px solid var(--emerald-400)',
+          borderRadius: 'var(--radius-md)',
+          padding: '14px 18px',
+          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.35)',
+          animation: 'fadeIn 0.3s ease'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <MessageSquare size={18} color="var(--emerald-400)" />
+              <strong style={{ fontSize: '0.86rem', color: 'var(--emerald-400)' }}>
+                {smsToast.deliveredToCellular 
+                  ? '📱 Live SMS Delivered to Mobile via Cellular Carrier' 
+                  : '📲 SMS Dispatched to Registered Contact'}
+              </strong>
+            </div>
+            <button 
+              onClick={() => setSmsToast(null)}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1rem' }}
+            >
+              ×
+            </button>
+          </div>
+
+          <div style={{ fontSize: '0.82rem', color: 'var(--text-primary)', background: 'var(--bg-glass)', padding: '10px 12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)', lineHeight: 1.45 }}>
+            {smsToast.smsText}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+            <span>To: <strong>{smsToast.recipient}</strong></span>
+            <span>Gateway: <strong style={{ color: 'var(--emerald-400)' }}>{smsToast.gateway}</strong></span>
+          </div>
+
+          {smsToast.otpPreview && (
+            <div style={{ marginTop: '8px', padding: '6px 10px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>Your Dispatched OTP:</span>
+              <button 
+                type="button" 
+                onClick={() => setOtpCode(smsToast.otpPreview)} 
+                className="btn btn-primary" 
+                style={{ padding: '3px 8px', fontSize: '0.72rem' }}
+              >
+                Auto-Fill {smsToast.otpPreview}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Top Bar with Back to Home, Language & Theme Controls */}
       <div style={{
         width: '100%',
@@ -202,17 +317,19 @@ export default function LoginPage({
         {/* Brand Header */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <div style={{
-            width: '52px',
-            height: '52px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, var(--emerald-500), var(--cyan-500))',
+            width: '56px',
+            height: '56px',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            border: '2px solid var(--emerald-400)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 12px auto',
-            boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)'
+            boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)',
+            background: 'var(--card-bg)'
           }}>
-            <Sprout size={30} color="#fff" />
+            <img src="/logo.png" alt="AgriPilot" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
 
           <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '4px' }}>
@@ -236,7 +353,7 @@ export default function LoginPage({
         }}>
           <button
             type="button"
-            onClick={() => { setActiveTab('otp'); setErrorMsg(''); }}
+            onClick={() => { setActiveTab('otp'); setErrorMsg(''); setSuccessMsg(''); }}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -259,7 +376,7 @@ export default function LoginPage({
 
           <button
             type="button"
-            onClick={() => { setActiveTab('id'); setErrorMsg(''); }}
+            onClick={() => { setActiveTab('id'); setErrorMsg(''); setSuccessMsg(''); }}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -323,9 +440,32 @@ export default function LoginPage({
             padding: '8px 12px',
             marginBottom: '14px',
             fontSize: '0.78rem',
-            color: 'var(--rose-500)'
+            color: 'var(--rose-500)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
           }}>
-            {errorMsg}
+            <AlertCircle size={14} style={{ flexShrink: 0 }} />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        {/* Success Notification */}
+        {successMsg && (
+          <div style={{
+            background: 'rgba(16, 185, 129, 0.12)',
+            border: '1px solid var(--emerald-400)',
+            borderRadius: 'var(--radius-sm)',
+            padding: '8px 12px',
+            marginBottom: '14px',
+            fontSize: '0.78rem',
+            color: 'var(--emerald-400)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <CheckCircle2 size={14} style={{ flexShrink: 0 }} />
+            <span>{successMsg}</span>
           </div>
         )}
 
@@ -333,9 +473,21 @@ export default function LoginPage({
         {activeTab === 'otp' && (
           <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>
             <div style={{ marginBottom: '14px' }}>
-              <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-                {t.mobile_label}
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                  {t.mobile_label}
+                </label>
+                {otpSent && (
+                  <button
+                    type="button"
+                    onClick={() => { setOtpSent(false); setOtpCode(''); setCountdown(0); }}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--emerald-400)', fontSize: '0.74rem', cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    Change Number
+                  </button>
+                )}
+              </div>
+
               <div style={{ display: 'flex', gap: '8px' }}>
                 <span style={{
                   display: 'flex',
@@ -362,36 +514,42 @@ export default function LoginPage({
               </div>
             </div>
 
+            {/* When OTP is Sent: User inputs the 6 digits */}
             {otpSent && (
               <div style={{ marginBottom: '16px' }}>
-                <div style={{
-                  background: 'rgba(16, 185, 129, 0.1)',
-                  border: '1px solid var(--emerald-400)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '8px 12px',
-                  marginBottom: '10px',
-                  fontSize: '0.76rem',
-                  color: 'var(--emerald-400)'
-                }}>
-                  {t.otp_sent_to} +91 {mobile}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700 }}>
+                    {t.enter_otp}
+                  </label>
+                  {countdown > 0 ? (
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Clock size={12} /> {t.resend_otp} {countdown}s
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      style={{ background: 'transparent', border: 'none', color: 'var(--cyan-400)', fontSize: '0.74rem', cursor: 'pointer', fontWeight: 700 }}
+                    >
+                      Resend OTP
+                    </button>
+                  )}
                 </div>
 
-                <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-                  {t.enter_otp}
-                </label>
                 <input
                   type="text"
                   className="input-control"
-                  placeholder="123456"
+                  placeholder="• • • • • •"
                   maxLength={6}
                   value={otpCode}
                   onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  autoFocus
                   style={{
-                    fontSize: '1.2rem',
-                    letterSpacing: '0.3em',
+                    fontSize: '1.25rem',
+                    letterSpacing: '0.35em',
                     textAlign: 'center',
                     fontWeight: 800,
-                    color: 'var(--emerald-400)'
+                    color: 'var(--text-primary)'
                   }}
                 />
               </div>
@@ -406,7 +564,7 @@ export default function LoginPage({
               {otpSent ? (
                 <>
                   <CheckCircle2 size={16} />
-                  <span>{t.verify_login}</span>
+                  <span>{loading ? 'Verifying...' : t.verify_login}</span>
                 </>
               ) : (
                 <>
@@ -460,58 +618,64 @@ export default function LoginPage({
           </form>
         )}
 
-        {/* Divider */}
+        {/* Divider: Pre-registered Contacts */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
-          margin: '22px 0 16px 0',
+          margin: '22px 0 14px 0',
           color: 'var(--text-muted)',
           fontSize: '0.72rem',
           textTransform: 'uppercase',
           fontWeight: 700
         }}>
           <div style={{ flex: 1, height: '1px', background: 'var(--border-glass)' }} />
-          <span>{t.or_demo_login}</span>
+          <span>Pre-Registered Contact Numbers</span>
           <div style={{ flex: 1, height: '1px', background: 'var(--border-glass)' }} />
         </div>
 
-        {/* 1-Click Instant Demo Login Buttons */}
+        {/* Pre-Registered Quick Contact Chips */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <button
             type="button"
-            onClick={() => handleQuickDemo('farmer')}
+            onClick={() => handleQuickSelectContact('9876543210', 'Farmer')}
             className="btn btn-secondary"
             style={{
               width: '100%',
               justifyContent: 'space-between',
-              padding: '8px 14px',
+              padding: '8px 12px',
               fontSize: '0.8rem'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.1rem' }}>👨‍🌾</span>
-              <strong style={{ color: 'var(--text-primary)' }}>{t.demo_farmer}</strong>
+              <div style={{ textAlign: 'left' }}>
+                <strong style={{ color: 'var(--text-primary)', display: 'block' }}>Ramesh Patel (+91 98765 43210)</strong>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Wheat Plot • Indore (MP)</span>
+              </div>
             </div>
-            <ChevronRight size={14} color="var(--emerald-400)" />
+            <span className="badge badge-emerald" style={{ fontSize: '0.65rem' }}>Select</span>
           </button>
 
           <button
             type="button"
-            onClick={() => handleQuickDemo('agronomist')}
+            onClick={() => handleQuickSelectContact('9425088712', 'Agronomist')}
             className="btn btn-secondary"
             style={{
               width: '100%',
               justifyContent: 'space-between',
-              padding: '8px 14px',
+              padding: '8px 12px',
               fontSize: '0.8rem'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.1rem' }}>🔬</span>
-              <strong style={{ color: 'var(--text-primary)' }}>{t.demo_agronomist}</strong>
+              <div style={{ textAlign: 'left' }}>
+                <strong style={{ color: 'var(--text-primary)', display: 'block' }}>Dr. R. K. Verma (+91 94250 88712)</strong>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Senior Agronomist • ICAR</span>
+              </div>
             </div>
-            <ChevronRight size={14} color="var(--purple-400)" />
+            <span className="badge badge-purple" style={{ fontSize: '0.65rem' }}>Select</span>
           </button>
         </div>
 

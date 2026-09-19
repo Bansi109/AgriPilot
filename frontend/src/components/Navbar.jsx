@@ -11,7 +11,8 @@ import {
   Home,
   LogOut,
   LogIn,
-  User
+  User,
+  ClipboardList
 } from 'lucide-react';
 import { translations } from '../i18n/translations';
 
@@ -29,7 +30,8 @@ export default function Navbar({
   isWsConnected,
   currentUser,
   onNavigate,
-  onLogout
+  onLogout,
+  onOpenFarmerProfile
 }) {
   const t = translations[language] || translations.English;
 
@@ -43,33 +45,32 @@ export default function Navbar({
             width: '44px', 
             height: '44px', 
             borderRadius: '12px', 
-            background: 'linear-gradient(135deg, var(--emerald-500), var(--cyan-500))', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
+            overflow: 'hidden',
             boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            border: '2px solid var(--emerald-400)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'var(--card-bg)'
           }}
           title={t.home_nav}
         >
-          <Sprout size={26} color="#ffffff" />
+          <img src="/logo.png" alt="AgriPilot" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <h1 
               onClick={() => onNavigate && onNavigate('home')}
-              style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)', cursor: 'pointer' }}
+              style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--text-primary)', cursor: 'pointer', margin: 0 }}
             >
               Agri<span style={{ color: 'var(--emerald-500)' }}>Pilot</span>
             </h1>
-            <span className="badge badge-emerald" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
-              {t.ps6_badge}
-            </span>
             <span className="badge badge-cyan" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
               {t.india_hub}
             </span>
           </div>
-          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>
             {t.brand_sub}
           </p>
         </div>
@@ -88,6 +89,19 @@ export default function Navbar({
           >
             <Home size={15} color="var(--emerald-400)" />
             <span>{t.home_nav}</span>
+          </button>
+        )}
+
+        {/* Farmer Profile & Input Calibration Modal Button */}
+        {onOpenFarmerProfile && (
+          <button
+            onClick={onOpenFarmerProfile}
+            className="btn btn-secondary"
+            style={{ padding: '6px 12px', fontSize: '0.8rem', border: '1px solid var(--emerald-400)' }}
+            title="Farmer Farm Profile & Land/Fertilizer Calibration"
+          >
+            <ClipboardList size={15} color="var(--emerald-400)" />
+            <span>{language === 'Hindi' ? 'खेत व खाद विवरण' : 'Farm Profile'}</span>
           </button>
         )}
 

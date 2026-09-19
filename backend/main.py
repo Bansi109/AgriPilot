@@ -32,6 +32,7 @@ from modules.profit_optimizer import profit_optimizer
 from modules.farm_to_market import farm_to_market_agent
 from modules.knowledge_graph import seasonal_knowledge_graph
 from modules.omnichannel_dispatcher import omnichannel_dispatcher
+from modules.auth_service import auth_service
 
 from agents.marketplace.specialist_agents import agent_marketplace
 from agents.core_orchestrator import core_orchestrator
@@ -96,6 +97,16 @@ class IncidentUpdateRequest(BaseModel):
     resolution_status: str
     agronomist_notes: str = ""
 
+class SendOTPRequest(BaseModel):
+    phone: str
+    role: str = "Farmer"
+    language: str = "Hindi"
+
+class VerifyOTPRequest(BaseModel):
+    phone: str
+    otp: str
+    role: Optional[str] = None
+
 # API Endpoints
 
 @app.get("/api/health")
@@ -107,6 +118,33 @@ def health_check():
         "specialist_agents": 7,
         "mode": "Closed-Loop Autonomous"
     }
+
+# Genuine Authentication Endpoints
+@app.post("/api/auth/send-otp")
+def send_contact_otp(req: SendOTPRequest):
+    result = auth_service.generate_and_send_otp(
+        phone=req.phone,
+        role=req.role,
+        language=req.language
+    )
+    if not result.get("success"):
+        return JSONResponse(status_code=400, content=result)
+    return result
+
+@app.post("/api/auth/verify-otp")
+def verify_contact_otp(req: VerifyOTPRequest):
+    result = auth_service.verify_otp(
+        phone=req.phone,
+        submitted_otp=req.otp,
+        role=req.role
+    )
+    if not result.get("success"):
+        return JSONResponse(status_code=400, content=result)
+    return result
+
+@app.get("/api/auth/registered-contacts")
+def get_registered_contacts():
+    return auth_service.get_registered_contacts()
 
 # 1. Closed-Loop Decision Cycle
 @app.post("/api/cycle/run")
