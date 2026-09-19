@@ -12,6 +12,7 @@ import CrisisCenter from './components/CrisisCenter';
 import FarmToMarketView from './components/FarmToMarketView';
 import KnowledgeGraphView from './components/KnowledgeGraphView';
 import OmnichannelSimulator from './components/OmnichannelSimulator';
+import { translations } from './i18n/translations';
 
 import { 
   Cpu, 
@@ -31,13 +32,27 @@ import {
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedFieldId, setSelectedFieldId] = useState('FIELD-NORTH-01');
-  const [language, setLanguage] = useState('Hindi');
+  const [language, setLanguage] = useState(() => localStorage.getItem('agripilot_lang') || 'Hindi');
+  const [theme, setTheme] = useState(() => localStorage.getItem('agripilot_theme') || 'dark');
   const [fields, setFields] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
   const [cycleData, setCycleData] = useState(null);
   const [cycleLoading, setCycleLoading] = useState(false);
   const [isWsConnected, setIsWsConnected] = useState(false);
   const [liveTelemetry, setLiveTelemetry] = useState(null);
+
+  // Sync theme with document element
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('agripilot_theme', theme);
+  }, [theme]);
+
+  // Sync language with localStorage
+  useEffect(() => {
+    localStorage.setItem('agripilot_lang', language);
+  }, [language]);
+
+  const t = translations[language] || translations.English;
 
   // Initial Data Fetch
   useEffect(() => {
@@ -127,18 +142,18 @@ export default function App() {
   };
 
   const navTabs = [
-    { id: 'overview', label: 'Command Center', icon: <Cpu size={16} /> },
-    { id: 'map', label: 'GIS Twin & What-If', icon: <Globe size={16} /> },
-    { id: 'lifecycle', label: 'Crop Lifecycle', icon: <Sprout size={16} /> },
-    { id: 'marketplace', label: 'Specialist Agents', icon: <Bot size={16} /> },
-    { id: 'pest-vision', label: 'Pest Vision Lab', icon: <Bug size={16} /> },
-    { id: 'crop-rotation', label: 'Crop Rotation DAG', icon: <GitFork size={16} /> },
-    { id: 'profit', label: 'Mandi Profit Optimizer', icon: <TrendingUp size={16} /> },
-    { id: 'planner', label: 'Operations Planner', icon: <Calendar size={16} /> },
-    { id: 'crisis', label: 'Crisis Center', icon: <ShieldAlert size={16} /> },
-    { id: 'farm-market', label: 'Farm-to-Market', icon: <Truck size={16} /> },
-    { id: 'knowledge-graph', label: 'Seasonal Memory', icon: <Brain size={16} /> },
-    { id: 'omnichannel', label: 'IoT & SMS Dispatch', icon: <Radio size={16} /> },
+    { id: 'overview', label: t.tab_overview, icon: <Cpu size={16} /> },
+    { id: 'map', label: t.tab_map, icon: <Globe size={16} /> },
+    { id: 'lifecycle', label: t.tab_lifecycle, icon: <Sprout size={16} /> },
+    { id: 'marketplace', label: t.tab_marketplace, icon: <Bot size={16} /> },
+    { id: 'pest-vision', label: t.tab_pest, icon: <Bug size={16} /> },
+    { id: 'crop-rotation', label: t.tab_rotation, icon: <GitFork size={16} /> },
+    { id: 'profit', label: t.tab_profit, icon: <TrendingUp size={16} /> },
+    { id: 'planner', label: t.tab_planner, icon: <Calendar size={16} /> },
+    { id: 'crisis', label: t.tab_crisis, icon: <ShieldAlert size={16} /> },
+    { id: 'farm-market', label: t.tab_f2m, icon: <Truck size={16} /> },
+    { id: 'knowledge-graph', label: t.tab_kg, icon: <Brain size={16} /> },
+    { id: 'omnichannel', label: t.tab_omni, icon: <Radio size={16} /> },
   ];
 
   return (
@@ -150,6 +165,8 @@ export default function App() {
         fields={fields}
         language={language}
         setLanguage={setLanguage}
+        theme={theme}
+        setTheme={setTheme}
         onRunCycle={handleRunDecisionCycle}
         cycleLoading={cycleLoading}
         activeIncidentsCount={2}
@@ -178,6 +195,7 @@ export default function App() {
             weatherData={weatherData}
             field={activeField}
             onNavigateTab={setActiveTab}
+            language={language}
           />
         )}
 
@@ -186,51 +204,66 @@ export default function App() {
             fields={fields}
             selectedFieldId={selectedFieldId}
             onSelectField={setSelectedFieldId}
+            language={language}
           />
         )}
 
         {activeTab === 'lifecycle' && (
           <CropLifecycleRoadmap
             field={activeField}
+            language={language}
           />
         )}
 
         {activeTab === 'marketplace' && (
-          <AgentMarketplace />
+          <AgentMarketplace
+            language={language}
+          />
         )}
 
         {activeTab === 'pest-vision' && (
           <PestVisionLab
             weatherData={weatherData}
+            language={language}
           />
         )}
 
         {activeTab === 'crop-rotation' && (
-          <CropRotationDAG />
+          <CropRotationDAG
+            language={language}
+          />
         )}
 
         {activeTab === 'profit' && (
           <MarketProfitOptimizer
             field={activeField}
+            language={language}
           />
         )}
 
         {activeTab === 'planner' && (
-          <OperationsPlanner />
+          <OperationsPlanner
+            language={language}
+          />
         )}
 
         {activeTab === 'crisis' && (
-          <CrisisCenter />
+          <CrisisCenter
+            language={language}
+          />
         )}
 
         {activeTab === 'farm-market' && (
           <FarmToMarketView
             field={activeField}
+            language={language}
           />
         )}
 
         {activeTab === 'knowledge-graph' && (
-          <KnowledgeGraphView />
+          <KnowledgeGraphView
+            language={language}
+          />
         )}
 
         {activeTab === 'omnichannel' && (

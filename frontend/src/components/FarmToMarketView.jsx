@@ -7,14 +7,17 @@ import {
   CheckCircle2, 
   DollarSign, 
   TrendingUp, 
-  Phone,
-  ArrowRight,
-  RefreshCw
+  Phone, 
+  ArrowRight, 
+  RefreshCw 
 } from 'lucide-react';
+import { translations } from '../i18n/translations';
 
-export default function FarmToMarketView({ field }) {
+export default function FarmToMarketView({ field, language }) {
   const [f2mData, setF2mData] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const t = translations[language] || translations.English;
 
   const fetchF2M = async () => {
     setLoading(true);
@@ -44,12 +47,12 @@ export default function FarmToMarketView({ field }) {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Truck size={22} color="var(--cyan-400)" />
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-                Farm-to-Market Autonomous Coordination (Module 6.4.12)
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                {t.f2m_title}
               </h2>
             </div>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              Coordinates post-harvest logistics, freight transport booking, and APMC terminal price optimization.
+              {t.f2m_sub}
             </p>
           </div>
 
@@ -64,7 +67,7 @@ export default function FarmToMarketView({ field }) {
               style={{ fontSize: '0.82rem' }}
             >
               <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-              <span>Refresh Logistics</span>
+              <span>{t.refresh_logistics}</span>
             </button>
           </div>
         </div>
@@ -72,7 +75,7 @@ export default function FarmToMarketView({ field }) {
         {/* Expected Production Metrics */}
         {f2mData?.total_estimated_production && (
           <div style={{ 
-            background: 'rgba(255, 255, 255, 0.025)', 
+            background: 'var(--card-bg)', 
             padding: '16px 20px', 
             borderRadius: 'var(--radius-sm)', 
             border: '1px solid var(--border-glass)',
@@ -84,15 +87,15 @@ export default function FarmToMarketView({ field }) {
             gap: '14px'
           }}>
             <div>
-              <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>Estimated Harvest Volume:</span>
-              <p style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginTop: '2px' }}>
+              <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{t.est_harvest_vol}:</span>
+              <p style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '2px' }}>
                 {f2mData.total_estimated_production.tonnes} Tonnes ({f2mData.total_estimated_production.quintals} Quintals)
               </p>
             </div>
 
             {bestMandi && (
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>Top Terminal Payout:</span>
+                <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>{t.top_payout}:</span>
                 <p style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--emerald-400)', marginTop: '2px' }}>
                   ₹{bestMandi.total_expected_payout_inr?.toLocaleString()} (₹{bestMandi.net_price_per_qtl}/Qtl net)
                 </p>
@@ -104,22 +107,22 @@ export default function FarmToMarketView({ field }) {
 
       {/* Regional Mandis Comparison Table */}
       <div className="glass-panel" style={{ padding: '24px' }}>
-        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '16px' }}>
-          Regional APMC Mandi Net Realization Comparison
+        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '16px', color: 'var(--text-primary)' }}>
+          {t.mandi_comparison}
         </h3>
 
         <div style={{ overflowX: 'auto', marginBottom: '18px' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.84rem' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border-glass)', color: 'var(--text-muted)', textAlign: 'left' }}>
-                <th style={{ padding: '10px 12px' }}>Mandi APMC Terminal</th>
-                <th style={{ padding: '10px 12px' }}>Distance & Transit</th>
-                <th style={{ padding: '10px 12px' }}>Gross Modal Price</th>
-                <th style={{ padding: '10px 12px' }}>Freight Cost</th>
-                <th style={{ padding: '10px 12px', color: 'var(--emerald-400)' }}>Net Realized Price</th>
-                <th style={{ padding: '10px 12px' }}>Total Expected Payout</th>
-                <th style={{ padding: '10px 12px' }}>Queue Wait</th>
-                <th style={{ padding: '10px 12px' }}>Payment Speed</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_terminal}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_dist}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_gross}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_freight}</th>
+                <th style={{ padding: '10px 12px', color: 'var(--emerald-400)' }}>{t.mandi_col_net}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_total}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_wait}</th>
+                <th style={{ padding: '10px 12px' }}>{t.mandi_col_settle}</th>
               </tr>
             </thead>
             <tbody>
@@ -129,19 +132,19 @@ export default function FarmToMarketView({ field }) {
                   <tr 
                     key={m.mandi_id} 
                     style={{ 
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                      background: isBest ? 'rgba(16, 185, 129, 0.08)' : 'transparent'
+                      borderBottom: '1px solid var(--border-glass)',
+                      background: isBest ? 'rgba(16, 185, 129, 0.09)' : 'transparent'
                     }}
                   >
-                    <td style={{ padding: '12px', fontWeight: 700, color: '#fff' }}>
+                    <td style={{ padding: '12px', fontWeight: 700, color: 'var(--text-primary)' }}>
                       {m.mandi_name}
-                      {isBest && <span className="badge badge-emerald" style={{ marginLeft: '8px', fontSize: '0.65rem' }}>Top Pick</span>}
+                      {isBest && <span className="badge badge-emerald" style={{ marginLeft: '8px', fontSize: '0.65rem' }}>{t.top_pick}</span>}
                     </td>
                     <td style={{ padding: '12px', color: 'var(--text-secondary)' }}>{m.distance_km} km ({m.transit_time})</td>
-                    <td style={{ padding: '12px', color: '#fff' }}>₹{m.gross_price_per_qtl}</td>
+                    <td style={{ padding: '12px', color: 'var(--text-primary)' }}>₹{m.gross_price_per_qtl}</td>
                     <td style={{ padding: '12px', color: 'var(--rose-500)' }}>-₹{m.freight_per_qtl}/Qtl</td>
                     <td style={{ padding: '12px', color: 'var(--emerald-400)', fontWeight: 800 }}>₹{m.net_realized_price_per_qtl}/Qtl</td>
-                    <td style={{ padding: '12px', color: isBest ? 'var(--emerald-400)' : '#fff', fontWeight: 700 }}>₹{m.total_net_payout_inr?.toLocaleString()}</td>
+                    <td style={{ padding: '12px', color: isBest ? 'var(--emerald-400)' : 'var(--text-primary)', fontWeight: 700 }}>₹{m.total_net_payout_inr?.toLocaleString()}</td>
                     <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{m.queue_wait_hours} hrs</td>
                     <td style={{ padding: '12px', color: 'var(--text-muted)' }}>{m.settlement}</td>
                   </tr>
@@ -159,8 +162,8 @@ export default function FarmToMarketView({ field }) {
         <div className="glass-panel" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <Truck size={18} color="var(--emerald-400)" />
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
-              Allocated Transport Logistics Fleet
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              {t.logistics_fleet}
             </h3>
           </div>
 
@@ -169,7 +172,7 @@ export default function FarmToMarketView({ field }) {
               <div 
                 key={v.vehicle_id}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.025)',
+                  background: 'var(--card-bg)',
                   border: '1px solid var(--border-glass)',
                   borderRadius: 'var(--radius-sm)',
                   padding: '16px',
@@ -180,11 +183,11 @@ export default function FarmToMarketView({ field }) {
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: '0.94rem', color: '#fff', display: 'block' }}>
+                  <strong style={{ fontSize: '0.94rem', color: 'var(--text-primary)', display: 'block' }}>
                     {v.type} ({v.vehicle_id})
                   </strong>
                   <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    Capacity: {v.capacity_tonnes} Tonnes ({v.capacity_quintals} Qtl) • Rate: ₹{v.rate_per_km}/km
+                    {t.capacity}: {v.capacity_tonnes} Tonnes ({v.capacity_quintals} Qtl) • {t.rate}: ₹{v.rate_per_km}/km
                   </span>
                   <div style={{ marginTop: '6px', fontSize: '0.8rem', color: 'var(--emerald-400)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Phone size={13} /> {v.driver_name} ({v.driver_phone})
@@ -203,8 +206,8 @@ export default function FarmToMarketView({ field }) {
         <div className="glass-panel" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <CheckCircle2 size={18} color="var(--amber-400)" />
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
-              Autonomous Dispatch Verification Protocol
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              {t.dispatch_protocol}
             </h3>
           </div>
 
@@ -213,7 +216,7 @@ export default function FarmToMarketView({ field }) {
               <li 
                 key={idx}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.025)',
+                  background: 'var(--card-bg)',
                   border: '1px solid var(--border-glass)',
                   borderRadius: 'var(--radius-sm)',
                   padding: '12px 14px',

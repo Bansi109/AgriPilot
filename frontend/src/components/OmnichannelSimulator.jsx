@@ -10,13 +10,16 @@ import {
   Terminal, 
   Droplet, 
   MessageSquare, 
-  UserCheck,
-  Zap
+  UserCheck, 
+  Zap 
 } from 'lucide-react';
+import { translations } from '../i18n/translations';
 
 export default function OmnichannelSimulator({ language }) {
   const [logs, setLogs] = useState({ dispatch_log: [], escalation_queue: [] });
   const [loading, setLoading] = useState(false);
+
+  const t = translations[language] || translations.English;
 
   // IoT Valve Controller Form State
   const [valveId, setValveId] = useState('VALVE-N1-01');
@@ -25,10 +28,6 @@ export default function OmnichannelSimulator({ language }) {
   const [flowRate, setFlowRate] = useState(115.0);
   const [fertChannel, setFertChannel] = useState('A');
   const [iotStatusMsg, setIotStatusMsg] = useState(null);
-
-  // SMS Form State
-  const [smsPhone, setSmsPhone] = useState('+91 98765 43210');
-  const [smsLang, setSmsLang] = useState(language || 'Hindi');
 
   // Escalation Review Note
   const [reviewNote, setReviewNote] = useState('');
@@ -99,12 +98,12 @@ export default function OmnichannelSimulator({ language }) {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Radio size={22} color="var(--emerald-400)" />
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-                Omnichannel Execution & IoT Hardware Orchestration (Sections 6.5 & 6.6)
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                {t.omni_title}
               </h2>
             </div>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              Direct MQTT pump/valve triggers, multilingual offline SMS/Voice advisories (Twilio), and human agronomist escalation.
+              {t.omni_sub}
             </p>
           </div>
 
@@ -115,7 +114,7 @@ export default function OmnichannelSimulator({ language }) {
             style={{ fontSize: '0.82rem' }}
           >
             <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-            <span>Refresh Dispatch Feed</span>
+            <span>{t.refresh_dispatch}</span>
           </button>
         </div>
       </div>
@@ -127,8 +126,8 @@ export default function OmnichannelSimulator({ language }) {
         <div className="glass-panel" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <Zap size={18} color="var(--amber-400)" />
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
-              Smart Drip Solenoid & Pump MQTT Dispatcher
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              {t.iot_solenoid}
             </h3>
           </div>
 
@@ -136,7 +135,7 @@ export default function OmnichannelSimulator({ language }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
               <div>
                 <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block', marginBottom: '4px' }}>
-                  Target Valve Node
+                  {t.target_valve_label}
                 </label>
                 <select 
                   className="select-control" 
@@ -151,7 +150,7 @@ export default function OmnichannelSimulator({ language }) {
 
               <div>
                 <label style={{ fontSize: '0.76rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block', marginBottom: '4px' }}>
-                  Relay Command
+                  {t.relay_cmd_label}
                 </label>
                 <select 
                   className="select-control" 
@@ -167,7 +166,7 @@ export default function OmnichannelSimulator({ language }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
               <div>
-                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Duration (Mins)</label>
+                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>{t.duration_min}</label>
                 <input 
                   type="number" 
                   className="input-control" 
@@ -176,7 +175,7 @@ export default function OmnichannelSimulator({ language }) {
                 />
               </div>
               <div>
-                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Target Flow (LPM)</label>
+                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>{t.target_flow}</label>
                 <input 
                   type="number" 
                   className="input-control" 
@@ -185,7 +184,7 @@ export default function OmnichannelSimulator({ language }) {
                 />
               </div>
               <div>
-                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Fertilizer Channel</label>
+                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>{t.fert_channel}</label>
                 <select 
                   className="select-control" 
                   value={fertChannel} 
@@ -204,14 +203,14 @@ export default function OmnichannelSimulator({ language }) {
               style={{ width: '100%', marginTop: '4px' }}
             >
               <Send size={16} />
-              <span>Broadcast MQTT Hardware Command</span>
+              <span>{t.broadcast_mqtt}</span>
             </button>
           </div>
 
           {/* MQTT Live JSON Telemetry Box */}
           {iotStatusMsg && (
             <div style={{ 
-              background: 'rgba(0, 0, 0, 0.4)', 
+              background: 'var(--card-bg)', 
               borderRadius: 'var(--radius-sm)', 
               border: '1px solid var(--border-glass)',
               padding: '14px',
@@ -220,7 +219,7 @@ export default function OmnichannelSimulator({ language }) {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--emerald-400)', marginBottom: '6px' }}>
                 <Terminal size={14} />
-                <strong>MQTT Payload Dispatched (200 OK):</strong>
+                <strong>{t.mqtt_dispatched}:</strong>
               </div>
               <pre style={{ margin: 0, color: 'var(--text-secondary)', overflowX: 'auto' }}>
                 {JSON.stringify(iotStatusMsg.mqtt_payload, null, 2)}
@@ -234,8 +233,8 @@ export default function OmnichannelSimulator({ language }) {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Smartphone size={18} color="var(--cyan-400)" />
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700 }}>
-                Offline SMS & Voice Dispatch Inbox
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                {t.offline_sms_inbox}
               </h3>
             </div>
             <span className="badge badge-cyan">
@@ -244,13 +243,13 @@ export default function OmnichannelSimulator({ language }) {
           </div>
 
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '14px' }}>
-            Rural smallholders with low connectivity receive actionable advisories in plain local language without needing mobile data.
+            {t.sms_voice_sub}
           </p>
 
           {/* SMS Messages Stream */}
           <div style={{ 
             height: '320px', 
-            background: 'rgba(10, 15, 29, 0.9)', 
+            background: 'var(--card-bg)', 
             borderRadius: 'var(--radius-md)', 
             border: '1px solid var(--border-glass)',
             padding: '16px',
@@ -263,7 +262,7 @@ export default function OmnichannelSimulator({ language }) {
               <div 
                 key={l.dispatch_id}
                 style={{
-                  background: 'rgba(16, 185, 129, 0.08)',
+                  background: 'rgba(16, 185, 129, 0.09)',
                   border: '1px solid rgba(16, 185, 129, 0.25)',
                   borderRadius: '12px 12px 12px 2px',
                   padding: '12px 14px',
@@ -275,7 +274,7 @@ export default function OmnichannelSimulator({ language }) {
                   <span>To: {l.recipient}</span>
                   <span>{l.timestamp}</span>
                 </div>
-                <p style={{ fontSize: '0.86rem', color: '#fff', lineHeight: 1.45 }}>
+                <p style={{ fontSize: '0.86rem', color: 'var(--text-primary)', lineHeight: 1.45, margin: 0 }}>
                   {l.message_text}
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px', fontSize: '0.7rem' }}>
@@ -295,12 +294,12 @@ export default function OmnichannelSimulator({ language }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <UserCheck size={20} color="var(--purple-400)" />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 800 }}>
-              Human Agronomist Escalation Desk & Expert Review Queue
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+              {t.escalation_desk}
             </h3>
           </div>
           <span className="badge badge-purple">
-            {logs.escalation_queue.filter(e => e.status === 'Pending Review').length} Awaiting Sign-off
+            {logs.escalation_queue.filter(e => e.status === 'Pending Review').length} {t.awaiting_signoff}
           </span>
         </div>
 
@@ -311,7 +310,7 @@ export default function OmnichannelSimulator({ language }) {
               <div 
                 key={esc.escalation_id}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.025)',
+                  background: 'var(--card-bg)',
                   border: '1px solid var(--border-glass)',
                   borderRadius: 'var(--radius-md)',
                   padding: '18px 20px',
@@ -325,21 +324,21 @@ export default function OmnichannelSimulator({ language }) {
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                     <span className="badge badge-rose" style={{ fontSize: '0.68rem' }}>{esc.severity}</span>
-                    <strong style={{ fontSize: '0.96rem', color: '#fff' }}>{esc.title}</strong>
+                    <strong style={{ fontSize: '0.96rem', color: 'var(--text-primary)' }}>{esc.title}</strong>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>({esc.field} • {esc.crop})</span>
                   </div>
                   <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                    Proposed AI Intervention: <strong>{esc.proposed_action}</strong>
+                    {t.proposed_ai}: <strong>{esc.proposed_action}</strong>
                   </p>
                   <span style={{ fontSize: '0.74rem', color: 'var(--cyan-400)', display: 'block', marginTop: '4px' }}>
-                    AI Confidence Score: {Math.round(esc.ai_confidence * 100)}% • Submitted: {esc.submitted_at}
+                    {t.confidence_score}: {Math.round(esc.ai_confidence * 100)}% • Submitted: {esc.submitted_at}
                   </span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   {isApproved ? (
                     <span className="badge badge-emerald">
-                      Approved by {esc.reviewer}
+                      {t.approved_by} {esc.reviewer}
                     </span>
                   ) : (
                     <div style={{ display: 'flex', gap: '8px' }}>
@@ -349,7 +348,7 @@ export default function OmnichannelSimulator({ language }) {
                         onClick={() => handleReviewEscalation(esc.escalation_id, true)}
                       >
                         <CheckCircle2 size={14} />
-                        <span>Approve Action</span>
+                        <span>{t.approve_action}</span>
                       </button>
                       <button 
                         className="btn btn-danger"
@@ -357,7 +356,7 @@ export default function OmnichannelSimulator({ language }) {
                         onClick={() => handleReviewEscalation(esc.escalation_id, false)}
                       >
                         <XCircle size={14} />
-                        <span>Reject</span>
+                        <span>{t.reject_action}</span>
                       </button>
                     </div>
                   )}

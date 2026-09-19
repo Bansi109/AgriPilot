@@ -10,12 +10,15 @@ import {
   FileText,
   Send
 } from 'lucide-react';
+import { translations } from '../i18n/translations';
 
-export default function CrisisCenter() {
+export default function CrisisCenter({ language }) {
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [notes, setNotes] = useState('');
+
+  const t = translations[language] || translations.English;
 
   const fetchIncidents = async () => {
     setLoading(true);
@@ -61,18 +64,18 @@ export default function CrisisCenter() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <ShieldAlert size={22} color="var(--rose-500)" />
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-                Farm Crisis Response & Incident Management (Module 6.4.9)
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                {t.crisis_title}
               </h2>
             </div>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-              Rapid anomaly detection, structured emergency classification, and agronomist escalation workflows.
+              {t.crisis_sub}
             </p>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             <span className="badge badge-rose">
-              {incidents.filter(i => i.resolution_status !== 'Resolved').length} Open Incidents
+              {incidents.filter(i => i.resolution_status !== 'Resolved').length} {t.open_incidents}
             </span>
             <button 
               onClick={fetchIncidents} 
@@ -81,7 +84,7 @@ export default function CrisisCenter() {
               style={{ fontSize: '0.82rem' }}
             >
               <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-              <span>Refresh Incidents</span>
+              <span>{t.refresh_incidents}</span>
             </button>
           </div>
         </div>
@@ -101,7 +104,8 @@ export default function CrisisCenter() {
               style={{
                 padding: '22px',
                 borderLeft: `5px solid ${isCritical ? 'var(--rose-500)' : (isHigh ? 'var(--amber-400)' : 'var(--emerald-400)')}`,
-                background: isResolved ? 'rgba(15, 23, 42, 0.4)' : 'var(--bg-card)'
+                background: isResolved ? 'var(--card-bg)' : 'var(--card-bg)',
+                opacity: isResolved ? 0.78 : 1
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
@@ -109,11 +113,11 @@ export default function CrisisCenter() {
                   <span style={{ fontSize: '0.86rem', fontWeight: 700, color: 'var(--text-muted)' }}>
                     {inc.incident_id}
                   </span>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#fff' }}>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                     {inc.type}
                   </h3>
                   <span className={`badge ${isCritical ? 'badge-rose' : (isHigh ? 'badge-amber' : 'badge-emerald')}`}>
-                    {inc.severity} Severity
+                    {inc.severity} {t.priority_label}
                   </span>
                 </div>
 
@@ -128,20 +132,20 @@ export default function CrisisCenter() {
               </div>
 
               {/* Details & Telemetry */}
-              <div style={{ background: 'rgba(0, 0, 0, 0.25)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' }}>
+              <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border-glass)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-                  <span>Affected: <strong style={{ color: '#fff' }}>{inc.affected_field_name}</strong></span>
-                  <span>Detected: {inc.detected_at}</span>
+                  <span>{t.affected_field}: <strong style={{ color: 'var(--text-primary)' }}>{inc.affected_field_name}</strong></span>
+                  <span>{t.detected_at}: {inc.detected_at}</span>
                 </div>
                 <p style={{ fontSize: '0.86rem', color: isCritical ? 'var(--rose-500)' : 'var(--amber-400)', fontWeight: 600 }}>
-                  Trigger Condition: {inc.trigger_condition}
+                  {t.trigger_condition}: {inc.trigger_condition}
                 </p>
               </div>
 
               {/* Recommended Actions */}
               <div style={{ marginBottom: '14px' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>
-                  Recommended Rapid Mitigation Protocol:
+                  {t.rapid_mitigation}:
                 </span>
                 <ul style={{ listStyle: 'none', paddingLeft: 0, marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {inc.recommended_actions.map((act, i) => (
@@ -157,10 +161,10 @@ export default function CrisisCenter() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-glass)', paddingTop: '14px', flexWrap: 'wrap', gap: '12px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <User size={13} /> Assigned: <strong>{inc.assigned_worker}</strong>
+                    <User size={13} /> {t.assigned}: <strong style={{ color: 'var(--text-primary)' }}>{inc.assigned_worker}</strong>
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Wrench size={13} /> Tool: <strong>{inc.assigned_equipment}</strong>
+                    <Wrench size={13} /> {t.tool}: <strong style={{ color: 'var(--text-primary)' }}>{inc.assigned_equipment}</strong>
                   </span>
                 </div>
 
@@ -168,9 +172,9 @@ export default function CrisisCenter() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <input 
                       type="text" 
-                      placeholder="Add agronomist sign-off note..."
+                      placeholder={t.note_placeholder}
                       className="input-control"
-                      style={{ padding: '5px 10px', fontSize: '0.8rem', width: '220px' }}
+                      style={{ padding: '5px 10px', fontSize: '0.8rem', width: '240px' }}
                       value={selectedIncident === inc.incident_id ? notes : ''}
                       onChange={(e) => { setSelectedIncident(inc.incident_id); setNotes(e.target.value); }}
                     />
@@ -180,7 +184,7 @@ export default function CrisisCenter() {
                       onClick={() => handleResolveIncident(inc.incident_id, 'Resolved')}
                     >
                       <CheckCircle2 size={14} />
-                      <span>Sign & Resolve</span>
+                      <span>{t.sign_and_resolve}</span>
                     </button>
                   </div>
                 )}
@@ -188,7 +192,7 @@ export default function CrisisCenter() {
 
               {inc.agronomist_notes && (
                 <div style={{ marginTop: '10px', fontSize: '0.78rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                  Log Note: {inc.agronomist_notes}
+                  {t.log_note}: {inc.agronomist_notes}
                 </div>
               )}
             </div>

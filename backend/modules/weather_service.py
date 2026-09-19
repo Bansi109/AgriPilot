@@ -13,11 +13,21 @@ import json
 from typing import Dict, Any, List
 from datetime import datetime, timedelta
 
+INDIAN_AGRO_REGIONS = {
+    "Indore_MP": {"name": "Indore (Malwa Plateau, Madhya Pradesh)", "lat": 22.7196, "lon": 75.8577, "elevation": 553.0, "primary_crops": ["Wheat", "Chickpea", "Soybean"]},
+    "Khanna_Punjab": {"name": "Khanna / Ludhiana (Indo-Gangetic Plain, Punjab)", "lat": 30.7046, "lon": 76.2163, "elevation": 254.0, "primary_crops": ["Wheat", "Paddy Rice"]},
+    "Nashik_MH": {"name": "Nashik / Lasalgaon (Western Ghats, Maharashtra)", "lat": 20.0059, "lon": 73.7898, "elevation": 600.0, "primary_crops": ["Onion", "Vegetables", "Pulses"]},
+    "Rajkot_Gujarat": {"name": "Rajkot / Gondal (Saurashtra, Gujarat)", "lat": 22.3039, "lon": 70.8022, "elevation": 128.0, "primary_crops": ["Groundnut", "Cotton", "Sesame"]},
+    "Guntur_AP": {"name": "Guntur (Krishna-Godavari Zone, Andhra Pradesh)", "lat": 16.3067, "lon": 80.4365, "elevation": 33.0, "primary_crops": ["Cotton", "Chilli", "Pulses"]},
+    "Delhi_NCR": {"name": "IARI Pusa (Trans-Gangetic Plains, Delhi/NCR)", "lat": 28.6139, "lon": 77.2090, "elevation": 216.0, "primary_crops": ["Wheat", "Mustard", "Maize"]}
+}
+
 class WeatherService:
-    def __init__(self, default_lat: float = 28.6139, default_lon: float = 77.2090, elevation: float = 216.0):
-        self.default_lat = default_lat
+    def __init__(self, default_lat: float = 22.7196, default_lon: float = 75.8577, elevation: float = 553.0):
+        self.default_lat = default_lat  # Default: Central India (Indore, MP - Wheat/Gram heartland)
         self.default_lon = default_lon
         self.elevation = elevation
+        self.regions = INDIAN_AGRO_REGIONS
 
     def calculate_penman_monteith_et0(
         self,
