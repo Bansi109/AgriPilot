@@ -279,6 +279,10 @@ def get_operations_schedule():
 def replan_for_rain(rain_mm: float = 18.0):
     return operations_planner.trigger_rain_replan(rain_event_mm=rain_mm)
 
+@app.post("/api/operations/reset")
+def reset_operations_schedule():
+    return operations_planner.reset_schedule()
+
 # 12. Farm Profit Optimization (6.4.11)
 @app.get("/api/profit/optimize")
 def get_profit_optimization(crop: str = "Wheat", area_ha: float = 2.4, price_inr: float = 2450.0):

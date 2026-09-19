@@ -177,4 +177,11 @@ class OperationsPlanner:
             "total_active_tasks": len(self.schedule)
         }
 
+    def reset_schedule(self) -> List[Dict[str, Any]]:
+        """Resets the farm schedule back to the clean baseline tasks."""
+        import copy
+        self.schedule = copy.deepcopy(DEFAULT_SCHEDULE)
+        return self.schedule
+
 operations_planner = OperationsPlanner()
+
