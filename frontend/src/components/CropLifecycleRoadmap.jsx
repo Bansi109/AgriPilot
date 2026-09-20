@@ -24,7 +24,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
   const fetchLifecycle = async (cropName) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/crop/lifecycle?crop=${cropName}&sowing_date=${field?.sowing_date || '2026-08-05'}&soil_moisture=${field?.soil_moisture_pct || 52.4}`);
+      const res = await fetch(`/api/crop/lifecycle?crop=${cropName}&sowing_date=${field?.sowing_date || '2026-08-05'}&soil_moisture=${field?.soil_moisture_pct || 52.4}&_t=${Date.now()}`);
       const data = await res.json();
       setLifecycleData(data);
     } catch (e) {
@@ -43,7 +43,10 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
     Chickpea: language === 'Hindi' ? 'चना (Chickpea)' : 'Chickpea',
     Cotton: language === 'Hindi' ? 'कपास (Cotton)' : 'Cotton',
     Maize: language === 'Hindi' ? 'मक्का (Maize)' : 'Maize',
-    Groundnut: language === 'Hindi' ? 'मूंगफली (Groundnut)' : 'Groundnut'
+    Groundnut: language === 'Hindi' ? 'मूंगफली (Groundnut)' : 'Groundnut',
+    Tomato: language === 'Hindi' ? 'टमाटर (Tomato)' : 'Tomato',
+    Potato: language === 'Hindi' ? 'आलू (Potato)' : 'Potato',
+    Rice: language === 'Hindi' ? 'धान (Rice)' : 'Rice'
   };
 
   const cropIcons = {
@@ -51,7 +54,10 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
     Chickpea: '🌱',
     Cotton: '🌿',
     Maize: '🌽',
-    Groundnut: '🥜'
+    Groundnut: '🥜',
+    Tomato: '🍅',
+    Potato: '🥔',
+    Rice: '🌾'
   };
 
   return (
@@ -77,7 +83,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
             <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginRight: '4px', fontWeight: 700 }}>
               {t.switch_crop}:
             </span>
-            {(lifecycleData?.available_crops_for_switching || ['Wheat', 'Chickpea', 'Cotton', 'Maize', 'Groundnut']).map(c => (
+            {(lifecycleData?.available_crops_for_switching || ['Wheat', 'Chickpea', 'Cotton', 'Maize', 'Groundnut', 'Tomato', 'Potato']).map(c => (
               <button
                 key={c}
                 onClick={() => setSelectedCrop(c)}
@@ -141,7 +147,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
             </span>
             <p style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px' }}>
               {language === 'Hindi' 
-                ? `चरण 2: वनस्पति विकास एवं शाखाएं (दिन ${lifecycleData.days_after_sowing} / ${lifecycleData.total_crop_duration_days})`
+                ? `चरण ${lifecycleData.current_stage?.stage_id || 1}: ${lifecycleData.current_stage?.name || ''} (दिन ${lifecycleData.days_after_sowing} / ${lifecycleData.total_crop_duration_days})`
                 : lifecycleData.core_question_answers.what_stage_am_i_in}
             </p>
           </div>
@@ -151,9 +157,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
               {t.q2_title}
             </span>
             <p style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--amber-500)', marginTop: '4px' }}>
-              {language === 'Hindi'
-                ? "नाइट्रोजन की पहली टॉप-ड्रेसिंग (यूरिया 65 किग्रा/हेक्टेयर) और पीला रतुआ रोग की नियमित जांच करें।"
-                : lifecycleData.core_question_answers.what_should_i_do_now}
+              {lifecycleData.core_question_answers.what_should_i_do_now}
             </p>
           </div>
 
@@ -162,9 +166,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
               {t.q3_title}
             </span>
             <p style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>
-              {language === 'Hindi'
-                ? "झंडा पत्ती (Flag Leaf) निकलने वाली है। सूक्ष्म पोषक तत्व (जिंक व बोरॉन) के छिड़काव की तैयारी रखें।"
-                : lifecycleData.core_question_answers.what_should_i_prepare_for_next}
+              {lifecycleData.core_question_answers.what_should_i_prepare_for_next}
             </p>
           </div>
 
@@ -174,7 +176,7 @@ export default function CropLifecycleRoadmap({ field, language = 'Hindi' }) {
             </span>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px', lineHeight: 1.4 }}>
               {language === 'Hindi'
-                ? "यदि बारिश होती है तो सिंचाई अपने-आप रुक जाती है, और कीट का प्रकोप होने पर तत्काल स्प्रे कार्य योजना में जुड़ जाता है।"
+                ? "मौसम पूर्वानुमान, ET0 वाष्पीकरण डेटा और कीट स्कैन के आधार पर सिंचाई व छिड़काव शेड्यूल स्वतः अपडेट होता है।"
                 : lifecycleData.core_question_answers.how_does_plan_adapt}
             </p>
           </div>

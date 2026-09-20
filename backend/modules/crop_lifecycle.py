@@ -330,6 +330,134 @@ CROP_ROADMAP_TEMPLATES = {
                 "critical_vulnerability": "Pods breaking off inside dry hard soil during lifting."
             }
         ]
+    },
+    "Tomato": {
+        "duration_days": 110,
+        "base_temp_c": 10.0,
+        "target_gdd": 1500,
+        "expected_yield_qtl_ha": 350.0,
+        "stages": [
+            {
+                "stage_id": 1,
+                "name": "Month 1 — Nursery & Transplanting Establishment",
+                "days_range": (0, 30),
+                "monitoring_focus": "Seedling root establishment; Damping-off prevention; Early whitefly scouting.",
+                "tasks_now": [
+                    "Transplant 25-30 day healthy seedlings into raised beds.",
+                    "Apply basal NPK (40:80:60 kg/ha) + bio-fertilizers.",
+                    "Install yellow sticky traps to vector whiteflies (Tomato Leaf Curl Virus)."
+                ],
+                "prepare_next": "Staking and vegetative canopy development.",
+                "water_req_mm": 80.0,
+                "critical_vulnerability": "Damping-off fungal rot in poorly drained beds."
+            },
+            {
+                "stage_id": 2,
+                "name": "Month 2 — Vegetative Growth, Staking & Flowering",
+                "days_range": (31, 60),
+                "monitoring_focus": "Branch staking; Early blight lesions; Flower cluster development.",
+                "tasks_now": [
+                    "Stake vines with bamboo poles/twine to prevent soil contact.",
+                    "Fertigation with high Phosphorus & Nitrogen split.",
+                    "Prophylactic Mancozeb spray if early blight spots detected."
+                ],
+                "prepare_next": "Fruit set and early berry expansion.",
+                "water_req_mm": 130.0,
+                "critical_vulnerability": "Early Blight (Alternaria) foliar defoliation under warm humid weather."
+            },
+            {
+                "stage_id": 3,
+                "name": "Month 3 — Fruit Development & Color Turn",
+                "days_range": (61, 90),
+                "monitoring_focus": "Fruit expansion; Blossom end rot prevention (Calcium adequacy); Fruit borer.",
+                "tasks_now": [
+                    "Apply Calcium Nitrate foliar spray to prevent blossom end rot.",
+                    "Maintain steady drip fertigation to prevent fruit cracking.",
+                    "Spray Bacillus thuringiensis or NPV for fruit borer control."
+                ],
+                "prepare_next": "Staggered fruit harvesting and mandi dispatch.",
+                "water_req_mm": 140.0,
+                "critical_vulnerability": "Moisture fluctuation causing fruit splitting and blossom end rot."
+            },
+            {
+                "stage_id": 4,
+                "name": "Final Stage — Peak Harvest & Marketing",
+                "days_range": (91, 110),
+                "monitoring_focus": "Breaker-stage pink harvest; Grading; Mandi prices.",
+                "tasks_now": [
+                    "Harvest at breaker stage for distant transit or firm red for local APMC mandi.",
+                    "Sort and pack in aerated plastic crates.",
+                    "Clean old vines to break pest carryover."
+                ],
+                "prepare_next": "Succession crop: Legume or cereal rotation.",
+                "water_req_mm": 30.0,
+                "critical_vulnerability": "Market price crash due to glut in regional APMC mandis."
+            }
+        ]
+    },
+    "Potato": {
+        "duration_days": 100,
+        "base_temp_c": 7.0,
+        "target_gdd": 1400,
+        "expected_yield_qtl_ha": 280.0,
+        "stages": [
+            {
+                "stage_id": 1,
+                "name": "Month 1 — Sprouting & Earthing Up",
+                "days_range": (0, 25),
+                "monitoring_focus": "Tuber sprout emergence; Soil ridge height; Soil moisture.",
+                "tasks_now": [
+                    "Sow well-sprouted seed tubers at 5-7 cm depth on ridges.",
+                    "Apply basal NPK (50% N, 100% P, 50% K).",
+                    "Earthing up at 20-25 days after planting."
+                ],
+                "prepare_next": "Vegetative canopy expansion and tuber initiation.",
+                "water_req_mm": 75.0,
+                "critical_vulnerability": "Tuber rot from waterlogged heavy soils."
+            },
+            {
+                "stage_id": 2,
+                "name": "Month 2 — Tuber Initiation & Late Blight Watch",
+                "days_range": (26, 60),
+                "monitoring_focus": "Stolon swelling into tubers; High RH (>85%) Late Blight alerts; Aphid vectors.",
+                "tasks_now": [
+                    "Maintain steady furrows/drip moisture (tuber initiation is highly sensitive to drought).",
+                    "Prophylactic Copper Oxychloride / Mancozeb spray for Late Blight.",
+                    "Top-dress remaining Nitrogen."
+                ],
+                "prepare_next": "Tuber bulking and canopy maturation.",
+                "water_req_mm": 140.0,
+                "critical_vulnerability": "Late Blight (Phytophthora infestans) rapid epidemic under cool foggy weather."
+            },
+            {
+                "stage_id": 3,
+                "name": "Month 3 — Tuber Bulking & Skin Hardening",
+                "days_range": (61, 85),
+                "monitoring_focus": "Tuber weight gain; Soil temperature; Dehaulming timing.",
+                "tasks_now": [
+                    "Potassium sulphate fertigation to boost tuber size and starch.",
+                    "Cut haulms (vines) 10-15 days before harvest to harden tuber skin.",
+                    "Cease irrigation 10 days before dehaulming."
+                ],
+                "prepare_next": "Digging, sorting and cold storage booking.",
+                "water_req_mm": 90.0,
+                "critical_vulnerability": "High soil temp (>28°C) halting tuber growth and increasing rot."
+            },
+            {
+                "stage_id": 4,
+                "name": "Final Stage — Mechanical Digging & Cold Storage",
+                "days_range": (86, 100),
+                "monitoring_focus": "Skin firmness; Tuber damage rate; Cold storage rents & Mandi prices.",
+                "tasks_now": [
+                    "Dig tubers carefully in dry soil conditions.",
+                    "Cure in shade for 7-10 days to heal skin bruises.",
+                    "Grade by size (A, B, C) and dispatch to market or cold store."
+                ],
+                "prepare_next": "Succession crop: Maize, Green Gram or Paddy.",
+                "water_req_mm": 10.0,
+                "critical_vulnerability": "Bruising during digging leading to soft rot in storage."
+            }
+        ]
     }
 }
 

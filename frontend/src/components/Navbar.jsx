@@ -235,25 +235,6 @@ export default function Navbar({
             </button>
           )
         )}
-
-        <button 
-          onClick={onRunCycle} 
-          disabled={cycleLoading}
-          className="btn btn-primary"
-          style={{ minWidth: '180px' }}
-        >
-          {cycleLoading ? (
-            <>
-              <RefreshCw size={16} className="spin-icon" style={{ animation: 'spin 1s linear infinite' }} />
-              <span>{t.orchestrating}</span>
-            </>
-          ) : (
-            <>
-              <Play size={16} fill="currentColor" />
-              <span>{t.run_cycle}</span>
-            </>
-          )}
-        </button>
       </div>
 
       <style>{`
