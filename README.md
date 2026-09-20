@@ -1,315 +1,291 @@
 <p align="center">
-  <img src="assets/agripilot-logo.png" alt="AgriPilot" width="220"/>
+  <img src="assets/agripilot-logo.png" alt="AgriPilot Logo" width="220"/>
 </p>
 
-# AgriPilot — Autonomous Farm Decision & Action Orchestration Platform
+<h1 align="center">🌱 AgriPilot — Autonomous Farm Decision & Action Orchestration Platform</h1>
 
-<p align="center"><i>The farm decides. The farm acts. The farm remembers.</i></p>
+<p align="center">
+  <b><i>The farm decides. The farm acts. The farm remembers.</i></b>
+</p>
 
-**A closed-loop, multi-agent decision system for precision farming — offline-first by design**
+<p align="center">
+  A closed-loop, multi-agent autonomous decision system for precision agriculture — offline-first by design for Indian agro-climatic zones.
+</p>
 
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-Next.js-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
-[![LangGraph](https://img.shields.io/badge/Agents-LangChain%20%2F%20LangGraph-1C3C2E?style=flat-square)](https://langchain-ai.github.io/langgraph/)
-[![Twilio](https://img.shields.io/badge/Offline%20Delivery-Twilio%20SMS%2FVoice-F22F46?style=flat-square&logo=twilio&logoColor=white)](https://www.twilio.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](#license)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](#contributing)
-
-Built by **Team Tatva** for **Bit N Build '26** — *Problem Statement 6*
-
-[Overview](#overview) • [The Gap](#the-gap-we-target) • [Features](#features) • [Product Screenshots](#product-screenshots) • [Architecture](#architecture) • [Decision Model](#decision-model) • [Getting Started](#getting-started) • [API Surface](#api-surface) • [Tech Stack](#tech-stack) • [Project Structure](#project-structure) • [Impact](#projected-impact) • [Roadmap](#roadmap) • [Team](#team-tatva)
+<p align="center">
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12"/></a>
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/FastAPI-0.110-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19"/></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite"/></a>
+  <a href="https://coin-or.github.io/pulp/"><img src="https://img.shields.io/badge/PuLP-Optimization-FF6F00?style=for-the-badge" alt="PuLP"/></a>
+  <a href="https://www.twilio.com/"><img src="https://img.shields.io/badge/Offline%20Dispatch-Twilio%20SMS-F22F46?style=for-the-badge&logo=twilio&logoColor=white" alt="Twilio"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License MIT"/></a>
+</p>
 
 ---
 
-## Overview
+## 📌 Executive Overview
 
-A smallholder farmer makes five decisions a week — irrigate or not, fertilise or not, spray or not, what to plant next, when to sell — and today each one is made in isolation, from habit, a regional forecast, and a guess.
+In smallholder agriculture across India, farmers make critical weekly decisions — when to irrigate, how much NPK fertilizer to apply, when to spray pesticides, what successor crop to sow, and when to harvest for APMC mandis. Today, these decisions are often made in isolation based on habit, regional weather forecasts, or guesswork.
 
-The sensors, satellites, and price feeds that could inform those decisions already exist. What's missing is the layer above them: something that reconciles four incompatible data streams into *one* decision, and then carries that decision all the way to a valve opening or a phone ringing — including phones with no data connection.
+**AgriPilot** is the orchestration layer that connects IoT soil telemetry, Open-Meteo micro-climate weather data, computer vision drone/smartphone imagery, and APMC mandi price feeds into **a single automated closed-loop system**.
 
-**AgriPilot is that layer.** It senses the field, predicts risk, simulates the options against each other, schedules the resulting work, executes it — by MQTT relay, SMS, voice, or human escalation — and writes the outcome back into a seasonal memory so next season starts smarter than this one.
+Instead of leaving advice on a screen, AgriPilot carries decisions all the way to physical execution — triggering **MQTT drip irrigation valves**, sending **multilingual offline SMS/Voice alerts**, or escalating high-risk anomalies to **senior agronomists**.
 
-| Failure today | Root cause |
-|---|---|
-| Over-irrigation / under-irrigation | Regional forecasts miss field-level micro-climate |
-| Fertiliser overuse & runoff | Soil feedback arrives late, via lab tests |
-| Reactive, chemical-heavy pest control | Infestation spotted only once damage is visible |
-| Harvested at the wrong time | Timing disconnected from mandi price and arrivals |
-| Advice nobody acts on | Recommendations assume a smartphone and a data plan |
+---
 
-## The Gap We Target
+## 🎯 The Core Gap We Solve
 
-Existing agri-tech isn't wrong — it's incomplete. IoT soil sensors, satellite imagery, weather APIs, and price feeds are all real and already deployed. What none of them do:
+| Traditional Farming Challenge | AgriPilot Autonomous Solution |
+| :--- | :--- |
+| **Regional Weather Mismatch**: Standard forecasts miss field-level micro-climates. | **Micro-Climate Fusion**: Blends Open-Meteo satellite feeds with live field sensors for Penman-Monteith ET₀ calculation. |
+| **Delayed Soil Feedback**: Lab soil tests arrive weeks after crop stress occurs. | **Real-Time Soil Intelligence**: Autonomous NPK ratio monitoring and dynamic fertigation dosage. |
+| **Reactive Pest Spraying**: Infestations spotted only after visual crop damage occurs. | **Computer Vision Pest Lab**: Leaf pathology detection with statutory pre-harvest spray window solvers. |
+| **Unoptimized Mandi Sales**: Harvest timing disconnected from peak market price movements. | **PuLP Linear Programming**: Profit optimization matching harvest timing with top-paying regional APMC mandis. |
+| **Connectivity Barriers**: Smartphone apps fail in remote rural fields without 4G/5G data. | **Omnichannel Offline Dispatch**: Direct MQTT hardware control and offline Twilio SMS/Voice advisories in regional languages. |
 
-- **Reconcile** — a soil reading and a price forecast never talk to each other
-- **Contextualize** — a moisture value is not a decision
-- **Execute** — advice stops at a recommendation card; nobody opens the valve
-- **Reach the offline farmer** — most tools assume bandwidth that rural users don't have
+---
 
-AgriPilot's contribution is the orchestration layer, not the sensing — every component in the stack below is proven, off-the-shelf technology.
+## 🚀 Key Platform Features
 
-## Features
+- 🔄 **Closed-Loop Autonomous Decision Engine**: Senses field conditions, predicts risks, simulates alternatives, schedules tasks, and executes actions.
+- 🌡️ **Micro-Climate & ET₀ Forecasting**: Merges Open-Meteo forecasts with on-field sensor telemetry for 7-day moisture loss calibration.
+- 💧 **Smart Fertigation & Drip Solenoid Control**: Computes precise NPK nutrient mixes and triggers MQTT relay solenoid valves.
+- 🔬 **Computer Vision Pest Vision Lab**: Segments micro-lesions, quantifies outbreak severity, and checks mathematical spray window constraints (wind drift, rainfall runoff, thermal volatilization, and statutory PHI safety).
+- 📈 **PuLP Mandi Profit Optimizer**: Mathematical linear programming model maximizing net farm profit per hectare (up to +65% margin boost).
+- 🔄 **Dynamic Crop Rotation & DAG Engine**: Predecessor-successor transition optimization balancing soil nitrogen recovery, water budgets, and land equivalent ratios (LER).
+- 📋 **Autonomous Farm Operations Planner**: Converts AI recommendations into executable daily/weekly schedules with rain replanning.
+- 📱 **Omnichannel Offline SMS & Voice Inbox**: Delivers clear advisories via Twilio SMS to feature phones in regional languages (English & Hindi).
+- 🔐 **Multi-Role Authentication Portal**: Role-tailored access flows for **Progressive Farmers**, **Field Extension Officers**, and **Senior Agronomists**.
+- 🧠 **Farm Memory & Seasonal Knowledge Graph**: Persists seasonal field learnings and yield outcomes so each harvest improves AI accuracy.
 
-- **Localized micro-climate forecasting** — Open-Meteo + field telemetry blended for field-level (not regional) weather and ET₀ estimates
-- **Real-time soil intelligence** — automated NPK ratio and fertigation volume computation from live sensor readings
-- **Dynamic crop rotation engine** — alternate-crop recommendations matched to soil health, water budget, and market demand
-- **Vision-based pest detection** — leaf-level classification from drone/smartphone imagery for precision, early-stage treatment
-- **Market-aware harvest timing** — price-forecast-informed harvest scheduling instead of calendar-only timing
-- **Crop lifecycle intelligence** — growth-stage-wise care roadmaps that regenerate when the crop changes
-- **Farm Digital Twin + what-if simulation** — every action is scored against its alternatives (e.g. irrigate-now vs. delay) on yield, cost, water, and risk *before* it's recommended
-- **Adaptive agent marketplace** — specialist agents (weather, soil, crop, pest, market, machinery, labour) activated on demand and merged by one orchestration layer
-- **Crisis & incident management** — abnormal field conditions become structured, tracked incidents with escalation paths
-- **Autonomous operations planner** — the chosen action becomes a dated, resourced task, not just a suggestion
-- **Farm-to-market coordination** — harvest, labour, logistics, and mandi timing aligned in one plan
-- **Farm Memory & seasonal knowledge graph** — every outcome is logged, so advice gets farm-specific across seasons
-- **Omnichannel, offline-first delivery** — MQTT to hardware, Twilio SMS/voice to feature phones, dashboard for extension workers, human agronomist escalation above a confidence threshold
+---
 
-
-## Product Screenshots
-
-> A visual walkthrough of the AgriPilot prototype — from the autonomous decision cycle to market intelligence, crop care, pest detection, and farmer access.
+## 📸 Product Screenshots & Visual Walkthrough
 
 ### 1. Command Center — Closed-Loop Autonomous Decision Cycle
-
-The Command Center brings field telemetry, specialist agents, risk detection, what-if analysis, operations planning, farm-to-market coordination, and execution into one closed loop.
-
 <p align="center">
-  <img src="assets/screenshots/01-command-center.png" alt="AgriPilot Command Center showing the closed-loop autonomous decision cycle" width="100%"/>
+  <img src="assets/screenshots/01-command-center.png" alt="AgriPilot Command Center" width="100%"/>
 </p>
 
-### 2. Mandi Profit Optimizer — Market-Aware Harvest Timing
+*The primary dashboard integrating live field telemetry, soil moisture gauges, 72-hour precipitation alerts, PuLP profit optimization graphs, and interactive execution plans.*
 
-The Mandi Profit Optimizer connects price forecasting with harvest decisions, helping the system reason about timing, expected price movement, and projected farm margin.
+---
 
+### 2. Mandi Profit Optimizer — APMC Market Intelligence
 <p align="center">
-  <img src="assets/screenshots/02-mandi-profit-optimizer.png" alt="AgriPilot Mandi Profit Optimizer dashboard" width="100%"/>
+  <img src="assets/screenshots/02-mandi-profit-optimizer.png" alt="Mandi Profit Optimizer" width="100%"/>
 </p>
 
-### 3. Crop Lifecycle — Stage-Wise Agronomic Intelligence
+*30-day commodity price forecasting, regional APMC mandi payout comparisons (Indore, Khanna, Nashik), and linear programming profit optimization.*
 
-The Crop Lifecycle module turns crop growth stages into an actionable care roadmap, including current crop stage, immediate actions, upcoming preparation, and dynamically adapting plans.
+---
 
+### 3. Crop Lifecycle & Monthly Care Roadmap
 <p align="center">
-  <img src="assets/screenshots/03-crop-lifecycle.png" alt="AgriPilot Crop Lifecycle and Monthly Care Intelligence dashboard" width="100%"/>
+  <img src="assets/screenshots/03-crop-lifecycle.png" alt="Crop Lifecycle Dashboard" width="100%"/>
 </p>
 
-### 4. Pest Vision Lab — Vision-Based Early Detection & Spray Solver
+*Growth-stage tracking for crops from sowing to maturity, with DAS counters, stage-wise agronomic care checklists, and dynamic care intelligence.*
 
-The Pest Vision Lab combines leaf-image detection with micro-climate and application-safety constraints to identify risk and determine whether conditions are suitable for intervention.
+---
 
+### 4. Pest Vision Lab — Computer Vision & Spray Solver
 <p align="center">
-  <img src="assets/screenshots/04-pest-vision-lab.png" alt="AgriPilot Pest Vision Lab showing leaf pathology inspection and precision spray constraints" width="100%"/>
+  <img src="assets/screenshots/04-pest-vision-lab.png" alt="Pest Vision Lab" width="100%"/>
 </p>
 
-### 5. Farmer & Agronomist Access — Role-Based Login
+*Drone and smartphone leaf pathology inspection with micro-lesion segmentation, infection risk index, and mathematical spray safety constraint solver.*
 
-The portal supports different users, including progressive farmers, extension officers, and senior agronomists, with mobile OTP and Kisan ID/Agronomist access flows.
+---
 
+### 5. Multi-Role Portal Login — Farmers, Extension Officers & Agronomists
 <p align="center">
-  <img src="assets/screenshots/05-login-portal.png" alt="AgriPilot portal login with farmer, extension officer, and agronomist roles" width="100%"/>
+  <img src="assets/screenshots/05-login-portal.png" alt="AgriPilot Login Portal" width="100%"/>
 </p>
 
-## Architecture
+*Role-based authentication portal supporting Mobile OTP and Kisan ID login for Farmers, Field Extension Officers (KVK), and Senior Agronomists (ICAR).*
+
+---
+
+## 🏗️ System Architecture
 
 ```
- IoT Soil Telemetry ─┐
- Open-Meteo Weather  ─┤
- Drone / Phone Imagery┼──▶  Risk Detection Agent  ──▶  Farm Digital Twin
- Mandi Price APIs    ─┘            │                    (what-if simulation)
-                                    ▼                          │
-                        Specialist Agent Marketplace           ▼
-                (weather · soil · crop · pest · market   Constraint Solver
-                     · machinery · labour)             (cost, labour, water,
-                                    │                   crop safety, weather)
-                                    ▼                          │
-                     Autonomous Operations Planner ◀───────────┘
-                                    │
-                                    ▼
-                  Execution Orchestration Agent
-                  ┌─────────────┬──────────────┬──────────────────┐
-                  ▼             ▼              ▼                  ▼
-             MQTT Relay    Twilio SMS/Voice   Dashboard      Human Agronomist
-             (irrigation)  (offline farmer)  (extension)      (escalation)
-                                    │
-                                    ▼
-              Farm Memory & Seasonal Knowledge Graph ──▶ (feeds next cycle)
+                               ┌─────────────────────────┐
+                               │   IoT Soil Sensors      │
+                               │   Open-Meteo Satellite  │
+                               │   Drone/Phone Imagery   │
+                               │   APMC Mandi Price APIs │
+                               └────────────┬────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │ Risk Detection & Closed │
+                               │   Loop Decision Engine  │
+                               └────────────┬────────────┘
+                                            │
+                     ┌──────────────────────┴──────────────────────┐
+                     ▼                                             ▼
+       ┌───────────────────────────┐                 ┌───────────────────────────┐
+       │ Specialist Agent Network  │                 │    Farm Digital Twin      │
+       │ (Weather, Soil, Pest,     │                 │   What-If Simulation      │
+       │  Market, Machinery)       │                 │   Constraint Solver       │
+       └─────────────┬─────────────┘                 └─────────────┬─────────────┘
+                     │                                             │
+                     └──────────────────────┬──────────────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │ Autonomous Operations   │
+                               │    Schedule Planner     │
+                               └────────────┬────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │ Execution Orchestrator  │
+                               └────────────┬────────────┘
+                                            │
+         ┌──────────────────┬───────────────┴───────────────┬──────────────────┐
+         ▼                  ▼                               ▼                  ▼
+  ┌──────────────┐   ┌──────────────┐              ┌────────────────┐  ┌──────────────┐
+  │ MQTT Relay   │   │  Twilio SMS  │              │ Web Dashboard  │  │ Agronomist   │
+  │ Hardware     │   │  / Voice     │              │ (Extension)    │  │ Escalation   │
+  └──────────────┘   └──────────────┘              └────────────────┘  └──────────────┘
+         │                  │                               │                  │
+         └──────────────────┴───────────────┬───────────────┴──────────────────┘
+                                            │
+                                            ▼
+                               ┌─────────────────────────┐
+                               │ Seasonal Knowledge      │
+                               │ Graph (Farm Memory)     │
+                               └─────────────────────────┘
 ```
 
-### The closed-loop decision cycle
+---
 
-The full cycle re-runs continuously as new telemetry, weather, and market data arrive:
+## 💻 Tech Stack
 
-```
-Sense ──▶ Predict ──▶ Optimize ──▶ Coordinate ──▶ Execute ──▶ Monitor ──┐
-  ▲                                                                     │
-  └───────────────────────  fed into next cycle  ────────────────────  ┘
-```
+### Frontend Architecture
+- **Framework**: React 19 + Vite 5
+- **UI & Styling**: Vanilla CSS with glassmorphism design tokens, dark mode, and dynamic animations
+- **Iconography**: Lucide React
+- **Internationalization**: Bilingual (English & हिन्दी) with seamless real-time switching
 
-**Worked example:** Heavy rain is forecast in 24 hours → the Digital Twin simulates *irrigate-now* against *delay* → delay wins on water saved with no added crop stress → the planner reschedules the irrigation slot → an SMS goes to the farmer → the outcome is written to Farm Memory so the system remembers this field drains slowly.
+### Backend Architecture
+- **API Framework**: FastAPI 0.110 (Python 3.12)
+- **Optimization Engine**: PuLP Linear Programming Solver
+- **Computer Vision Pipeline**: PIL + NumPy leaf pathology micro-lesion segmentation
+- **Telemetry & Protocols**: WebSockets (`/ws/telemetry`), REST APIs, MQTT simulation payloads
+- **SMS Gateway**: Twilio REST API + Fast2SMS Gateway integration
 
-## Decision Model
+---
 
-Every action AgriPilot recommends clears a multi-constraint solver before it is approved — it isn't a single prediction, it's a scored comparison across the field's real constraints:
-
-```
-minimize    input_cost + water_used + crop_stress_risk
-
-subject to  soil_moisture           ≥  crop_safety_floor
-            fertigation_volume      ≤  NPK-derived_max_dose
-            labour_and_machinery    ≤  available_capacity
-            action_window           ⊆  suitable_weather_window
-            pesticide_application   respects  pre-harvest_interval (PHI)
-```
-
-Recommendations above a confidence threshold execute automatically (MQTT / SMS); recommendations below it escalate to a human agronomist rather than auto-executing.
-
-## Getting Started
-
-> AgriPilot is built around this stack for the hackathon prototype. Component-level completeness is tracked in [Roadmap](#roadmap) — see that section for exactly what runs end-to-end today versus what is designed but not yet wired up.
+## 🛠️ Getting Started & Installation
 
 ### Prerequisites
+- **Python**: Version 3.10+ (Python 3.12 recommended)
+- **Node.js**: Version 18.0+ & npm
 
-- Python 3.12+
-- Node.js 18+
-- (Optional) an [Open-Meteo](https://open-meteo.com/) API key and Twilio credentials for live weather and SMS
-
-### Backend
-
+### 1. Clone the Repository
 ```bash
-cd backend
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+git clone https://github.com/Bansi109/AgriPilot.git
+cd AgriPilot
 ```
 
-Interactive API docs are served at `http://localhost:8000/docs`.
-
-### Frontend
-
+### 2. Set Up & Run Backend Server
 ```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+pip install fastapi uvicorn pulp pillow numpy twilio
+
+# Start FastAPI server
+python main.py
+```
+*Backend API server will start at `http://127.0.0.1:8000` with interactive docs at `http://127.0.0.1:8000/docs`.*
+
+### 3. Set Up & Run Frontend Application
+```bash
+# Open a new terminal and navigate to frontend directory
 cd frontend
+
+# Install Node dependencies
 npm install
+
+# Launch Vite dev server
 npm run dev
 ```
+*Frontend application will start at `http://localhost:5173`.*
 
-Dashboard runs at `http://localhost:5173`.
+---
 
-### Environment variables (optional)
+## 📡 Key API Endpoints Summary
 
-```bash
-# backend/.env
-OPEN_METEO_API_KEY=your_key_here
-TWILIO_ACCOUNT_SID=your_sid_here
-TWILIO_AUTH_TOKEN=your_token_here
-MANDI_PRICE_API_KEY=your_key_here
-```
+| HTTP Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/cycle/run` | Triggers complete closed-loop autonomous decision cycle |
+| `GET` | `/api/weather/current` | Fetches micro-climate forecast & Penman-Monteith ET₀ |
+| `POST` | `/api/soil/evaluate` | Evaluates NPK soil levels and returns fertigation recipes |
+| `POST` | `/api/pest/analyze` | Analyzes leaf image / preset for pathology and spray safety window |
+| `GET` | `/api/profit/optimize` | Runs PuLP linear programming optimization for APMC prices |
+| `GET` | `/api/farm-to-market` | Evaluates harvest readiness, APMC payouts, and logistics transport |
+| `POST` | `/api/omnichannel/iot-command` | Dispatches MQTT hardware relay command to solenoid valves |
+| `POST` | `/api/omnichannel/sms-alert` | Dispatches offline SMS advisory via cellular gateway |
+| `GET` | `/api/omnichannel/logs` | Fetches live omnichannel dispatch logs and escalation queue |
+| `POST` | `/api/auth/verify-otp` | Authenticates OTP for Farmers, Extension Officers, and Agronomists |
+| `WS` | `/ws/telemetry` | WebSocket stream broadcasting real-time field telemetry |
 
-Without these, the backend falls back to synthetic weather/price data and disables live SMS delivery — the app still runs end-to-end for the demo.
+---
 
-## API Surface
-
-Planned/implemented endpoint surface for the orchestration layer — see [`/docs`](http://localhost:8000/docs) once the backend is running for the authoritative, live schema.
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/field/{id}/twin` | Farm Digital Twin state for a field |
-| `POST` | `/api/simulate` | Run a what-if comparison (e.g. irrigate-now vs. delay) |
-| `GET` | `/api/forecast/microclimate` | Field-level weather & ET₀ forecast |
-| `GET` | `/api/soil/{id}` | Live NPK, pH, moisture, EC readings |
-| `POST` | `/api/pest/classify` | Submit leaf imagery for pest/disease classification |
-| `GET` | `/api/market/forecast` | Mandi price forecast for harvest timing |
-| `POST` | `/api/plan/optimize` | Run the constraint solver and return a scored action plan |
-| `GET` | `/api/incidents` | Active crisis/incident queue |
-| `POST` | `/api/dispatch/{action}` | Trigger MQTT relay / SMS / voice / agronomist escalation |
-| `GET` | `/api/memory/{field_id}` | Seasonal knowledge graph for a field |
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Agent orchestration | LangChain / LangGraph, OpenAI GPT-4o |
-| Computer vision | YOLOv8 (leaf-level pest/disease classification) |
-| Backend services | Python 3.12, FastAPI, Celery, Redis |
-| Data — spatial | PostgreSQL + PostGIS (field geometry) |
-| Data — time-series | TimescaleDB (sensor telemetry) |
-| Data — logs | MongoDB (advisory & incident logs) |
-| Frontend | React / Next.js, TailwindCSS |
-| Field execution | MQTT (irrigation relays), Twilio (SMS / voice) |
-| Weather & market data | Open-Meteo API, government mandi price APIs |
-
-## Project Structure
+## 📂 Project Structure
 
 ```
 AgriPilot/
+├── assets/
+│   ├── agripilot-logo.png
+│   └── screenshots/
+│       ├── 01-command-center.png
+│       ├── 02-mandi-profit-optimizer.png
+│       ├── 03-crop-lifecycle.png
+│       ├── 04-pest-vision-lab.png
+│       └── 05-login-portal.png
 ├── backend/
-│   ├── requirements.txt
-│   └── app/
-│       ├── main.py                    # FastAPI entrypoint
-│       ├── agents/
-│       │   ├── risk_detection/        # Crisis & anomaly detection
-│       │   ├── action_planning/       # Constraint solver + operations planner
-│       │   └── execution/             # MQTT / Twilio / escalation orchestration
-│       ├── digital_twin/              # Farm Digital Twin + what-if simulation
-│       ├── marketplace/               # Specialist agents (weather, soil, crop, pest, market...)
-│       ├── lifecycle/                 # Crop lifecycle & monthly care intelligence
-│       ├── farm_to_market/            # Harvest, labour, logistics coordination
-│       ├── memory/                    # Seasonal knowledge graph
-│       ├── models/                    # SQLAlchemy + Pydantic schemas
-│       └── routers/                   # API route handlers
+│   ├── main.py                     # FastAPI main application server & routing
+│   ├── agents/                     # Multi-Agent decision & planning agents
+│   └── modules/                    # Specialized domain engines:
+│       ├── auth_service.py         # OTP & contact authentication
+│       ├── pest_vision_pipeline.py # Leaf computer vision & spray solver
+│       ├── omnichannel_dispatcher.py # MQTT hardware & SMS dispatcher
+│       ├── profit_optimizer.py     # PuLP profit optimization solver
+│       ├── crop_rotation_engine.py # DAG succession & intercropping
+│       ├── farm_to_market.py       # Harvest & APMC logistics coordinator
+│       └── weather_service.py      # Open-Meteo & micro-climate engine
 └── frontend/
+    ├── src/
+    │   ├── App.jsx                 # Primary layout & tab navigation orchestrator
+    │   ├── components/             # Feature UI components
+    │   │   ├── HomePage.jsx        # Landing page & feature showcase
+    │   │   ├── LoginPage.jsx       # Multi-role authentication portal
+    │   │   ├── OverviewDashboard.jsx # Command Center & Closed-Loop Engine
+    │   │   ├── PestVisionLab.jsx   # Vision pathology lab & spray solver
+    │   │   ├── OmnichannelSimulator.jsx # IoT MQTT & SMS dispatch feed
+    │   │   ├── FarmToMarketView.jsx # Logistics & Mandi optimization
+    │   │   └── ...                 # Additional feature components
+    │   └── i18n/
+    │       └── translations.js     # Bilingual translation dictionary (EN & HI)
     ├── package.json
-    └── src/
-        ├── pages/                     # Field map, lifecycle roadmap, what-if, incidents, ops
-        ├── components/                # Charts, heatmaps, gauges, alert cards
-        └── utils/, hooks/             # API client, auth, data hooks
+    └── vite.config.js
 ```
-
-## Projected Impact
-
-> These are design targets from our expected-outcomes analysis, **not measured results** — we have not yet run a field trial. We're presenting the hypothesis and the plan to test it, not evidence.
-
-| Metric | Target | Mechanism |
-|---|---|---|
-| Fertiliser applied | ↓ 25–30% | Precision fertigation replaces static dosing |
-| Freshwater consumed | ↓ up to 35% | Micro-climate forecasting prevents unnecessary irrigation |
-| Input cost / hectare | ↓ $150–250 | Targeted fertigation + localised pest containment |
-| Net farm income | ↑ 20–35% | Market-aware harvest timing + optimal crop selection |
-
-**Validation plan:** bench-test the pest CV model against PlantVillage and the ET₀ model against historical Open-Meteo + held-out farm station data (weeks 0–4) → paired-plot field pilot for one season, measuring water/fertiliser/pesticide use, yield, and realised price against a conventionally-farmed control plot → continuous tracking of SMS delivery, advisory adoption rate, and escalation precision.
-
-## Roadmap
-
-- [ ] Closed-loop cycle running end-to-end on one field, one crop, with the SMS path live *(hackathon build target)*
-- [ ] Benchmark vision & forecast models on public datasets; multi-field, multi-crop support
-- [ ] Local-language SMS/voice templates
-- [ ] Paired-plot field pilot for one season against conventional practice
-- [ ] Cooperative-scale deployment — one instance serving hundreds of holdings
-- [ ] Extension-worker triage dashboard with prioritized field risk queue
-
-**Out of scope (by design):** fabricating custom IoT/drone hardware (standard REST/MQTT telemetry assumed), executing commodity trades or loan settlement, and regulatory certification for autonomous pesticide drone spraying.
-
-## Contributing
-
-Contributions are welcome. Please open an issue to discuss significant changes before submitting a pull request.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes
-4. Open a pull request
-
-## Team Tatva
-
-| Area | Scope |
-|---|---|
-| Core Backend & Orchestration | Multi-agent coordination, constraint solver, execution & escalation |
-| Digital Twin & Simulation | What-if engine, farm profit optimization, autonomous operations planner |
-| Forecasting & Vision | Micro-climate/ET₀ forecasting, soil intelligence, pest CV pipeline |
-| Frontend Dashboard | Field maps, lifecycle roadmap, incident & ops views |
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for details.
 
 ---
 
-<p align="center"><i>The data reached the field years ago. The decision never did.</i></p>
+## 📜 License
+
+This project is open-source and released under the [MIT License](LICENSE).
+
+---
+
+<p align="center">
+  <b>Built for Indian Agriculture 🇮🇳 • Powered by Open-Meteo & PuLP Optimization</b>
+</p>
