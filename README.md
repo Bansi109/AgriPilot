@@ -18,7 +18,7 @@
 
 Built by **Team Tatva** for **Bit N Build '26** — *Problem Statement 6*
 
-[Overview](#overview) • [The Gap](#the-gap-we-target) • [Features](#features) • [Architecture](#architecture) • [Decision Model](#decision-model) • [Getting Started](#getting-started) • [API Surface](#api-surface) • [Tech Stack](#tech-stack) • [Project Structure](#project-structure) • [Impact](#projected-impact) • [Roadmap](#roadmap) • [Team](#team-tatva)
+[Overview](#overview) • [The Gap](#the-gap-we-target) • [Features](#features) • [Architecture](#architecture) • [Decision Model](#decision-model) • [Screenshots](#screenshots) • [Getting Started](#getting-started) • [API Surface](#api-surface) • [Tech Stack](#tech-stack) • [Project Structure](#project-structure) • [Impact](#projected-impact) • [Roadmap](#roadmap) • [Team](#team-tatva)
 
 ---
 
@@ -119,9 +119,63 @@ subject to  soil_moisture           ≥  crop_safety_floor
 
 Recommendations above a confidence threshold execute automatically (MQTT / SMS); recommendations below it escalate to a human agronomist rather than auto-executing.
 
+## Screenshots
+
+*A full walkthrough of the running prototype — landing page, module explorer, login, the closed-loop Command Center, and three of the specialist modules.*
+
+<p align="center">
+  <img src="assets/screenshot-hero.png" alt="AgriPilot landing page — hero" width="100%"/>
+  <br/><b>Landing Page</b>
+  <br/><i>Value proposition up front, with a live field snapshot in the strip below it — soil moisture, Penman-Monteith ET₀, a 72-hour rain alert, and mandi net gain — so the pitch is backed by a real number before a visitor clicks anything.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-modules-1.png" alt="AgriPilot module explorer, top three modules" width="100%"/>
+  <br/><b>Module Explorer <sub>(1 of 2)</sub></b>
+  <br/><i>Fleet-level stats (hectares monitored, water conserved, margin boost, vision pest accuracy) above the first three modules — Closed-Loop Autonomous Cycle, GIS Digital Twin & What-If Studio, and Computer Vision Pest Lab.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-modules-2.png" alt="AgriPilot module explorer, remaining modules and zone coverage" width="100%"/>
+  <br/><b>Module Explorer <sub>(2 of 2)</sub></b>
+  <br/><i>PuLP Mandi Profit Optimizer, Crop Rotation DAG Engine, and Omnichannel IoT & Offline SMS — pre-calibrated across five Indian agro-climatic zones from Indore to Guntur.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-login-portal.jpeg" alt="AgriPilot Portal Login — Mobile OTP and role-based access" width="70%"/>
+  <br/><b>Portal Login — role-based access</b>
+  <br/><i>Mobile OTP or Kisan ID login with three roles (Progressive Farmer, Extension Officer, Senior Agronomist) — the same login screen that routes a smallholder, an extension worker, and an agronomist into the views built for each.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-command-center.jpeg" alt="AgriPilot Command Center — Closed-Loop Autonomous Decision Cycle" width="100%"/>
+  <br/><b>Command Center — the closed loop, end to end</b>
+  <br/><i>All 8 cycle stages (Crop Lifecycle → Digital Twin → Marketplace → Risk Detection → What-If & Profit → Ops Planner → Farm-to-Market → Execute & Learn) completing as one run — <code>CYCLE-2026-0002</code> in 9.6s — with live soil moisture, Penman-Monteith ET₀, risk score, and the optimizer's net margin result.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-crop-lifecycle.jpeg" alt="Crop Lifecycle and Monthly Care Intelligence module" width="100%"/>
+  <br/><b>Crop Lifecycle & Monthly Care Intelligence <sub>(Module 6.4.6)</sub></b>
+  <br/><i>Day-by-day growth-stage tracking (Day 46 of 120, Vegetative Growth & Tillering) answering four standing questions — what stage, what to do now, what to prepare for next, and how the plan adapts — against a stage-wise agronomic roadmap.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-pest-vision-lab.jpeg" alt="Pest Vision Lab — leaf classification and precision spray window solver" width="100%"/>
+  <br/><b>Pest Vision Lab <sub>(Module 6.4.4)</sub></b>
+  <br/><i>Leaf-level pest classification (Stripe/Yellow Rust, 91% confidence) paired with a spray-safety solver that checks drift, runoff, and pre-harvest interval — and correctly holds the spray on a thermal-volatilization violation rather than approving it blind.</i>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-mandi-optimizer-hindi.jpeg" alt="Mandi Profit Optimizer in Hindi" width="100%"/>
+  <br/><b>Mandi Profit Optimizer — Hindi <sub>(Modules 6.4.5 & 6.4.11)</sub></b>
+  <br/><i>A 30-day mandi price forecast and PuLP-optimized harvest-timing recommendation, shown fully localized in Hindi — the same offline-first principle that drives SMS delivery also drives language, not just channel.</i>
+</p>
+
+> The values shown above (soil moisture, ET₀, risk score, margin boost, pest-classification confidence, hectares monitored, water conserved) are live outputs of the running system on the current demo dataset — real computed results, not field-validated outcomes. They're a different thing from the [Projected Impact](#projected-impact) figures further down, which are unvalidated long-run targets from the report's expected-outcomes analysis. Keep that distinction when presenting: "the system computed this" is provable on stage; "farmers will see this" isn't, yet.
+
 ## Getting Started
 
-> AgriPilot is built around this stack for the hackathon prototype. Component-level completeness is tracked in [Roadmap](#roadmap) — see that section for exactly what runs end-to-end today versus what is designed but not yet wired up.
+> The [screenshots above](#screenshots) are from the running prototype — Command Center, Crop Lifecycle, Pest Vision Lab, Mandi Optimizer, and login are all live. See [Roadmap](#roadmap) for what's demonstrated versus what's still ahead (SMS delivery on a real carrier, multi-field support, and field-validated impact).
 
 ### Prerequisites
 
@@ -234,9 +288,10 @@ AgriPilot/
 
 ## Roadmap
 
-- [ ] Closed-loop cycle running end-to-end on one field, one crop, with the SMS path live *(hackathon build target)*
+- [x] Closed-loop cycle running end-to-end on one field, one crop — demonstrated live in the [Command Center](#screenshots) (`CYCLE-2026-0002`, 9.6s)
+- [ ] SMS path live on a real carrier / real farmer phone number
 - [ ] Benchmark vision & forecast models on public datasets; multi-field, multi-crop support
-- [ ] Local-language SMS/voice templates
+- [ ] Local-language SMS/voice templates *(dashboard is already bilingual EN/HI — extend the same to SMS)*
 - [ ] Paired-plot field pilot for one season against conventional practice
 - [ ] Cooperative-scale deployment — one instance serving hundreds of holdings
 - [ ] Extension-worker triage dashboard with prioritized field risk queue
