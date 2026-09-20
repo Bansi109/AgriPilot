@@ -13,7 +13,8 @@ import {
 } from 'lucide-react';
 import { translations } from '../i18n/translations';
 
-export default function FarmToMarketView({ field, language }) {
+export default function FarmToMarketView({ field, language = 'Hindi' }) {
+  const t = translations[language] || translations.English;
   const [f2mData, setF2mData] = useState(null);
   const [loading, setLoading] = useState(false);
 
