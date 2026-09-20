@@ -63,39 +63,39 @@ Instead of leaving advice on a screen, AgriPilot carries decisions all the way t
 
 ## 📸 Product Screenshots & Visual Walkthrough
 
-### 1. Command Center — Closed-Loop Autonomous Decision Cycle
+### 1. Landing Page — Multi-Agent Precision Agriculture
+<p align="center">
+  <img src="assets/screenshots/00-landing-hero.png" alt="AgriPilot Landing Page" width="100%"/>
+</p>
+
+*Modern dark-mode interface highlighting real-time hectares monitored, water conserved, average margin boost, and computer vision accuracy.*
+
+---
+
+### 2. Command Center — Closed-Loop Autonomous Decision Cycle
 <p align="center">
   <img src="assets/screenshots/01-command-center.png" alt="AgriPilot Command Center" width="100%"/>
 </p>
 
-*The primary dashboard integrating live field telemetry, soil moisture gauges, 72-hour precipitation alerts, PuLP profit optimization graphs, and interactive execution plans.*
+*The primary dashboard integrating live field telemetry, soil moisture gauges, Penman-Monteith ET₀ calculations, 72-hour precipitation alerts, PuLP profit optimization metrics, and autonomous execution plans.*
 
 ---
 
-### 2. Mandi Profit Optimizer — APMC Market Intelligence
+### 3. GIS Digital Twin & What-If Simulation Studio
 <p align="center">
-  <img src="assets/screenshots/02-mandi-profit-optimizer.png" alt="Mandi Profit Optimizer" width="100%"/>
+  <img src="assets/screenshots/02-gis-twin-what-if.png" alt="GIS Twin & What-If Studio" width="100%"/>
 </p>
 
-*30-day commodity price forecasting, regional APMC mandi payout comparisons (Indore, Khanna, Nashik), and linear programming profit optimization.*
+*Stress-test agricultural decisions (e.g. Irrigate Now vs Delay Rain) before committing physical resources or dispatching IoT solenoid valves.*
 
 ---
 
-### 3. Crop Lifecycle & Monthly Care Roadmap
+### 4. Crop Lifecycle & Monthly Care Roadmap
 <p align="center">
   <img src="assets/screenshots/03-crop-lifecycle.png" alt="Crop Lifecycle Dashboard" width="100%"/>
 </p>
 
-*Growth-stage tracking for crops from sowing to maturity, with DAS counters, stage-wise agronomic care checklists, and dynamic care intelligence.*
-
----
-
-### 4. Pest Vision Lab — Computer Vision & Spray Solver
-<p align="center">
-  <img src="assets/screenshots/04-pest-vision-lab.png" alt="Pest Vision Lab" width="100%"/>
-</p>
-
-*Drone and smartphone leaf pathology inspection with micro-lesion segmentation, infection risk index, and mathematical spray safety constraint solver.*
+*Dynamic growth-stage tracking across crops (Wheat, Chickpea, Cotton, Maize, Groundnut, Tomato, Potato) with real-time DAS counters, stage-wise agronomic care checklists, and 4 core decision questions.*
 
 ---
 
@@ -104,7 +104,7 @@ Instead of leaving advice on a screen, AgriPilot carries decisions all the way t
   <img src="assets/screenshots/05-login-portal.png" alt="AgriPilot Login Portal" width="100%"/>
 </p>
 
-*Role-based authentication portal supporting Mobile OTP and Kisan ID login for Farmers, Field Extension Officers (KVK), and Senior Agronomists (ICAR).*
+*Role-based authentication portal supporting Mobile OTP and Kisan ID login for Progressive Farmers, Field Extension Officers (KVK), and Senior Agronomists (ICAR).*
 
 ---
 
