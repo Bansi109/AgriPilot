@@ -61,50 +61,131 @@ Instead of leaving advice on a screen, AgriPilot carries decisions all the way t
 
 ---
 
-## 📸 Product Screenshots & Visual Walkthrough
+## 📸 Comprehensive Visual Walkthrough (All 14 System Modules)
 
-### 1. Landing Page — Multi-Agent Precision Agriculture
+### 1. Landing Page — Multi-Agent Precision Agriculture Platform
 <p align="center">
-  <img src="assets/screenshots/00-landing-hero.png" alt="AgriPilot Landing Page" width="100%"/>
+  <img src="assets/screenshots/01-landing-hero.png" alt="AgriPilot Landing Page" width="100%"/>
 </p>
 
-*Modern dark-mode interface highlighting real-time hectares monitored, water conserved, average margin boost, and computer vision accuracy.*
+*Modern dark-mode glassmorphic interface displaying live aggregate impact metrics across Indian agro-climatic zones.*
 
 ---
 
-### 2. Command Center — Closed-Loop Autonomous Decision Cycle
+### 2. Multi-Role Portal Login — Farmers, Extension Officers & Agronomists
 <p align="center">
-  <img src="assets/screenshots/01-command-center.png" alt="AgriPilot Command Center" width="100%"/>
+  <img src="assets/screenshots/02-login-portal.png" alt="AgriPilot Multi-Role Portal Login" width="100%"/>
 </p>
 
-*The primary dashboard integrating live field telemetry, soil moisture gauges, Penman-Monteith ET₀ calculations, 72-hour precipitation alerts, PuLP profit optimization metrics, and autonomous execution plans.*
+*Authentication portal supporting Mobile OTP and Kisan ID login with pre-registered demo accounts for Progressive Farmers (Ramesh Patel), KVK Extension Officers (Anand Kumar), and ICAR Senior Agronomists (Dr. R. K. Verma).*
 
 ---
 
-### 3. GIS Digital Twin & What-If Simulation Studio
+### 3. Command Center — Closed-Loop Autonomous Decision Engine
 <p align="center">
-  <img src="assets/screenshots/02-gis-twin-what-if.png" alt="GIS Twin & What-If Studio" width="100%"/>
+  <img src="assets/screenshots/03-command-center.png" alt="Command Center Closed-Loop Decision Engine" width="100%"/>
 </p>
 
-*Stress-test agricultural decisions (e.g. Irrigate Now vs Delay Rain) before committing physical resources or dispatching IoT solenoid valves.*
+*The central cockpit orchestrating the 8-step decision pipeline: sensing field telemetry, evaluating risk anomalies, running PuLP optimizers, and generating prioritized execution plans.*
 
 ---
 
-### 4. Crop Lifecycle & Monthly Care Roadmap
+### 4. GIS Digital Twin & What-If Simulation Studio
 <p align="center">
-  <img src="assets/screenshots/03-crop-lifecycle.png" alt="Crop Lifecycle Dashboard" width="100%"/>
+  <img src="assets/screenshots/04-gis-twin-what-if.png" alt="GIS Digital Twin & What-If Studio" width="100%"/>
 </p>
 
-*Dynamic growth-stage tracking across crops (Wheat, Chickpea, Cotton, Maize, Groundnut, Tomato, Potato) with real-time DAS counters, stage-wise agronomic care checklists, and 4 core decision questions.*
+*Interactive scenario stress-testing engine evaluating operational alternatives (e.g. Irrigate Now vs Delay Irrigation for 18mm rain) before opening solenoid valves or spending capital.*
 
 ---
 
-### 5. Multi-Role Portal Login — Farmers, Extension Officers & Agronomists
+### 5. Crop Lifecycle & Monthly Care Roadmap
 <p align="center">
-  <img src="assets/screenshots/05-login-portal.png" alt="AgriPilot Login Portal" width="100%"/>
+  <img src="assets/screenshots/05-crop-lifecycle.png" alt="Crop Lifecycle & Monthly Care Roadmap" width="100%"/>
 </p>
 
-*Role-based authentication portal supporting Mobile OTP and Kisan ID login for Progressive Farmers, Field Extension Officers (KVK), and Senior Agronomists (ICAR).*
+*Dynamic growth-stage farming roadmap for Wheat, Chickpea, Cotton, Maize, Groundnut, Tomato, and Potato, answering the 4 core agronomic questions in real-time.*
+
+---
+
+### 6. Adaptive Specialist Agent Marketplace
+<p align="center">
+  <img src="assets/screenshots/06-specialist-marketplace.png" alt="Adaptive Specialist Agent Marketplace" width="100%"/>
+</p>
+
+*7 active specialized AI agents (Weather, Soil, Crop Health, Pest, Market, Machinery, and Labor) continually evaluating field parameters.*
+
+---
+
+### 7. Pest Vision Lab — Computer Vision & Spray Window Solver
+<p align="center">
+  <img src="assets/screenshots/07-pest-vision-lab.png" alt="Pest Vision Lab & Spray Solver" width="100%"/>
+</p>
+
+*Leaf pathology computer vision model detecting Yellow Rust, Early/Late Blight, Powdery Mildew, and Fall Armyworm, combined with micro-climate spray window safety constraint verification.*
+
+---
+
+### 8. Dynamic Alternate Cropping & DAG Succession Engine
+<p align="center">
+  <img src="assets/screenshots/08-crop-rotation-dag.png" alt="Dynamic Crop Rotation DAG Engine" width="100%"/>
+</p>
+
+*Predecessor-successor transition optimization balancing soil nitrogen recovery, water availability, pathogen cycle breaking, and market revenue potential.*
+
+---
+
+### 9. Mandi Market Intelligence & PuLP Profit Optimizer
+<p align="center">
+  <img src="assets/screenshots/09-mandi-profit-optimizer.png" alt="Mandi Market Intelligence & PuLP Profit Optimizer" width="100%"/>
+</p>
+
+*30-day APMC commodity price forecasting with PuLP constrained linear programming profit optimization (comparing conventional practice vs AgriPilot precision engine).*
+
+---
+
+### 10. Autonomous Farm Operations Planner
+<p align="center">
+  <img src="assets/screenshots/10-operations-planner.png" alt="Autonomous Farm Operations Planner" width="100%"/>
+</p>
+
+*Resource-constrained weekly executable farm schedule auto-adjusting for labor shifts, machinery availability, and sudden weather disruptions.*
+
+---
+
+### 11. Farm Crisis Response & Incident Management
+<p align="center">
+  <img src="assets/screenshots/11-crisis-center.png" alt="Farm Crisis Center" width="100%"/>
+</p>
+
+*Rapid anomaly detection, structured emergency classification, rapid mitigation protocols, and senior agronomist sign-off desk.*
+
+---
+
+### 12. Farm-to-Market Autonomous Coordination
+<p align="center">
+  <img src="assets/screenshots/12-farm-to-market.png" alt="Farm to Market Autonomous Coordination" width="100%"/>
+</p>
+
+*Coordinates harvest volume estimates, APMC mandi net realization price comparisons (Indore, Dewas, Ujjain), allocated logistics fleet booking, and dispatch verification protocols.*
+
+---
+
+### 13. Farm Memory & Seasonal Knowledge Graph
+<p align="center">
+  <img src="assets/screenshots/13-seasonal-memory-kg.png" alt="Farm Memory & Seasonal Knowledge Graph" width="100%"/>
+</p>
+
+*Graph database linking fields, crop rotations, pest outbreaks, interventions, and historical yield gains to extract actionable rules across seasons.*
+
+---
+
+### 14. Omnichannel Execution & IoT Hardware Orchestration
+<p align="center">
+  <img src="assets/screenshots/14-omnichannel-iot-sms.png" alt="Omnichannel Execution & IoT Dispatch" width="100%"/>
+</p>
+
+*Direct MQTT smart drip valve actuation and low-bandwidth multilingual offline SMS/Voice advisories for rural smallholder farmers.*
 
 ---
 
