@@ -29,15 +29,23 @@ export default function OmnichannelSimulator({ language }) {
   const [fertChannel, setFertChannel] = useState('A');
   const [iotStatusMsg, setIotStatusMsg] = useState(null);
 
-  // Escalation Review Note
-  const [reviewNote, setReviewNote] = useState('');
+  // Feed filter and status toast state
+  const [feedFilter, setFeedFilter] = useState('ALL'); // 'ALL' | 'MQTT' | 'SMS'
+  const [toastMsg, setToastMsg] = useState(null);
+
+  // Custom SMS Dispatch State
+  const [smsPhone, setSmsPhone] = useState('9876543210');
+  const [smsText, setSmsText] = useState('AgriPilot: Field North-01 drip irrigation active for 30 mins.');
+  const [smsSending, setSmsSending] = useState(false);
 
   const fetchLogs = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/omnichannel/logs');
+      const res = await fetch(`/api/omnichannel/logs?_t=${Date.now()}`);
       const data = await res.json();
       setLogs(data);
+      setToastMsg(language === 'Hindi' ? 'डिस्पैच फीड ताज़ा हो गई!' : 'Dispatch Feed Refreshed!');
+      setTimeout(() => setToastMsg(null), 2500);
     } catch (e) {
       console.error(e);
     } finally {
@@ -64,9 +72,34 @@ export default function OmnichannelSimulator({ language }) {
       });
       const data = await res.json();
       setIotStatusMsg(data);
-      fetchLogs();
+      setFeedFilter('ALL');
+      await fetchLogs();
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const handleSendSMS = async (e) => {
+    e?.preventDefault();
+    if (!smsText) return;
+    setSmsSending(true);
+    try {
+      await fetch('/api/omnichannel/sms-alert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: smsPhone,
+          message_en: smsText,
+          message_hi: smsText,
+          language_preference: language
+        })
+      });
+      setFeedFilter('ALL');
+      await fetchLogs();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSmsSending(false);
     }
   };
 
@@ -107,15 +140,22 @@ export default function OmnichannelSimulator({ language }) {
             </p>
           </div>
 
-          <button 
-            onClick={fetchLogs} 
-            disabled={loading}
-            className="btn btn-secondary"
-            style={{ fontSize: '0.82rem' }}
-          >
-            <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
-            <span>{t.refresh_dispatch}</span>
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {toastMsg && (
+              <span className="badge badge-emerald" style={{ fontSize: '0.74rem', animation: 'fadeIn 0.2s ease' }}>
+                ✓ {toastMsg}
+              </span>
+            )}
+            <button 
+              onClick={fetchLogs} 
+              disabled={loading}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.82rem' }}
+            >
+              <RefreshCw size={14} className={loading ? 'spin-icon' : ''} />
+              <span>{t.refresh_dispatch}</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -228,62 +268,117 @@ export default function OmnichannelSimulator({ language }) {
           )}
         </div>
 
-        {/* Right: Offline SMS & Voice Advisory Simulator */}
+        {/* Right: Dispatch Stream & Offline SMS Simulator */}
         <div className="glass-panel" style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Smartphone size={18} color="var(--cyan-400)" />
               <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                 {t.offline_sms_inbox}
               </h3>
             </div>
-            <span className="badge badge-cyan">
-              Twilio Sim Gateway
-            </span>
+            
+            {/* Feed Filter Chips */}
+            <div style={{ display: 'flex', gap: '4px', background: 'var(--bg-glass)', padding: '2px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-glass)' }}>
+              {['ALL', 'MQTT', 'SMS'].map(f => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => setFeedFilter(f)}
+                  style={{
+                    padding: '3px 8px',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    borderRadius: '3px',
+                    border: 'none',
+                    background: feedFilter === f ? 'var(--emerald-500)' : 'transparent',
+                    color: feedFilter === f ? '#fff' : 'var(--text-secondary)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {f === 'ALL' ? 'All' : (f === 'MQTT' ? '⚡ MQTT' : '📱 SMS')}
+                </button>
+              ))}
+            </div>
           </div>
 
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '14px' }}>
             {t.sms_voice_sub}
           </p>
 
-          {/* SMS Messages Stream */}
+          {/* Unified Dispatch Stream (MQTT + SMS) */}
           <div style={{ 
-            height: '320px', 
+            height: '240px', 
             background: 'var(--card-bg)', 
             borderRadius: 'var(--radius-md)', 
             border: '1px solid var(--border-glass)',
-            padding: '16px',
+            padding: '14px',
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: '12px'
+            gap: '10px',
+            marginBottom: '14px'
           }}>
-            {logs.dispatch_log.filter(l => l.channel.includes('SMS') || l.channel.includes('Twilio')).map(l => (
-              <div 
-                key={l.dispatch_id}
-                style={{
-                  background: 'rgba(16, 185, 129, 0.09)',
-                  border: '1px solid rgba(16, 185, 129, 0.25)',
-                  borderRadius: '12px 12px 12px 2px',
-                  padding: '12px 14px',
-                  alignSelf: 'flex-start',
-                  maxWidth: '92%'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                  <span>To: {l.recipient}</span>
-                  <span>{l.timestamp}</span>
-                </div>
-                <p style={{ fontSize: '0.86rem', color: 'var(--text-primary)', lineHeight: 1.45, margin: 0 }}>
-                  {l.message_text}
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px', fontSize: '0.7rem' }}>
-                  <span style={{ color: 'var(--emerald-400)' }}>✓ {l.status}</span>
-                  <span style={{ color: 'var(--text-muted)' }}>Lang: {l.language}</span>
-                </div>
-              </div>
-            ))}
+            {logs.dispatch_log
+              .filter(l => {
+                if (feedFilter === 'MQTT') return l.channel.includes('MQTT') || l.channel.includes('IoT');
+                if (feedFilter === 'SMS') return l.channel.includes('SMS') || l.channel.includes('Twilio');
+                return true;
+              })
+              .map(l => {
+                const isMqtt = l.channel.includes('MQTT') || l.channel.includes('IoT');
+                return (
+                  <div 
+                    key={l.dispatch_id}
+                    style={{
+                      background: isMqtt ? 'rgba(6, 182, 212, 0.09)' : 'rgba(16, 185, 129, 0.09)',
+                      border: `1px solid ${isMqtt ? 'rgba(6, 182, 212, 0.3)' : 'rgba(16, 185, 129, 0.25)'}`,
+                      borderRadius: '10px',
+                      padding: '10px 12px',
+                      alignSelf: 'flex-start',
+                      width: '100%'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px', fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                      <span className={`badge ${isMqtt ? 'badge-cyan' : 'badge-emerald'}`} style={{ fontSize: '0.62rem' }}>
+                        {isMqtt ? '⚡ MQTT Hardware Command' : '📱 Cellular SMS Alert'}
+                      </span>
+                      <span>{l.timestamp}</span>
+                    </div>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-primary)', lineHeight: 1.4, margin: '4px 0', fontFamily: isMqtt ? 'var(--font-mono)' : 'inherit' }}>
+                      {l.message_text}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px', fontSize: '0.7rem' }}>
+                      <span>To: <strong>{l.recipient}</strong></span>
+                      <span style={{ color: isMqtt ? 'var(--cyan-400)' : 'var(--emerald-400)', fontWeight: 700 }}>✓ {l.status}</span>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
+
+          {/* Interactive SMS Alert Form */}
+          <form onSubmit={handleSendSMS} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="text"
+                className="input-control"
+                placeholder="Recipient Mobile (+91...)"
+                value={smsPhone}
+                onChange={(e) => setSmsPhone(e.target.value)}
+                style={{ flex: 1, fontSize: '0.78rem' }}
+              />
+              <button
+                type="submit"
+                disabled={smsSending}
+                className="btn btn-secondary"
+                style={{ fontSize: '0.78rem', whiteSpace: 'nowrap' }}
+              >
+                <Send size={13} />
+                <span>{smsSending ? 'Dispatching...' : 'Dispatch SMS'}</span>
+              </button>
+            </div>
+          </form>
 
         </div>
 

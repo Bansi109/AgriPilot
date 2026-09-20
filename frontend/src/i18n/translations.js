@@ -5,7 +5,7 @@
 export const translations = {
   English: {
     brand_sub: "Farm-to-Field Advisory & Action Orchestration Agents",
-    ps6_badge: "PS-6 Autonomous AI",
+    ps6_badge: "Autonomous AI",
     india_hub: "🇮🇳 India Agro-Climatic Zone",
     run_cycle: "Run Decision Cycle",
     orchestrating: "Orchestrating...",
@@ -70,7 +70,7 @@ export const translations = {
     apply_decision: "Apply This Decision",
 
     // Lifecycle
-    lifecycle_title: "Crop Lifecycle & Monthly Care Intelligence (Module 6.4.6)",
+    lifecycle_title: "Crop Lifecycle & Monthly Care Intelligence",
     lifecycle_sub: "Growth-stage farming roadmap dynamically updated by micro-climate telemetry and field sensing.",
     lifecycle_progress: "Lifecycle Progress",
     days_after_sowing: "Days After Sowing",
@@ -85,7 +85,7 @@ export const translations = {
     care_tasks: "Care Plan Tasks",
 
     // Pest Lab
-    pest_title: "Vision-Based Pest Outbreak Early Containment & Spray Solver (Module 6.4.4)",
+    pest_title: "Vision-Based Pest Outbreak Early Containment & Spray Solver",
     pest_sub: "Drone and smartphone leaf computer vision detection with micro-climate infection risk correlation.",
     upload_photo: "Upload Leaf Photo",
     sample_feeds: "Test Sample Feeds",
@@ -97,17 +97,17 @@ export const translations = {
     pre_harvest_int: "Statutory Pre-Harvest Interval (PHI)",
 
     // Rotation DAG
-    dag_title: "Dynamic Alternate Cropping & DAG Succession Engine (Module 6.4.3)",
+    dag_title: "Dynamic Alternate Cropping & DAG Succession Engine",
     dag_sub: "Predecessor-successor transition optimization balancing soil NPK recovery, water budget, pathogen disruption, and mandi returns.",
     standing_crop: "Current Standing Crop",
     water_budget_label: "Available 90-Day Successor Water Budget (ET₀ & Stored Moisture)",
     dag_rankings: "DAG Algorithmic Transition Rankings",
     top_successor: "Top Successor",
     intercropping_title: "Companion Intercropping Modalities & Land Equivalent Ratio (LER)",
-    matrix_title: "Reference Agronomic Succession Matrix (Section 6.4.3)",
+    matrix_title: "Reference Agronomic Succession Matrix",
 
     // Mandi & Profit
-    mandi_title: "Mandi Market Intelligence & Farm Profit Optimizer (Modules 6.4.5 & 6.4.11)",
+    mandi_title: "Mandi Market Intelligence & Farm Profit Optimizer",
     mandi_sub: "7–30 day commodity price forecasts and PuLP linear programming profit optimization.",
     apmc_forecast: "30-Day APMC Price Forecast",
     harvest_timing_advisory: "Harvest Timing Advisory",
@@ -119,34 +119,34 @@ export const translations = {
     net_farm_profit: "Net Farm Profit (Per Hectare)",
 
     // Operations Planner
-    planner_title: "Autonomous Farm Operations Planner (Module 6.4.10)",
+    planner_title: "Autonomous Farm Operations Planner",
     planner_sub: "Translates multi-agent intelligence into daily and weekly executable resource-constrained schedules.",
     simulate_rain_btn: "Simulate Rain Disruption Re-Plan",
     refresh_schedule: "Refresh Schedule",
     weekly_schedule: "Weekly Executable Farm Schedule",
 
     // Crisis
-    crisis_title: "Farm Crisis Response & Incident Management (Module 6.4.9)",
+    crisis_title: "Farm Crisis Response & Incident Management",
     crisis_sub: "Rapid anomaly detection, structured emergency classification, and agronomist escalation workflows.",
     open_incidents: "Open Incidents",
     rapid_mitigation: "Recommended Rapid Mitigation Protocol",
     sign_and_resolve: "Sign & Resolve",
 
     // Farm to Market
-    f2m_title: "Farm-to-Market Autonomous Coordination (Module 6.4.12)",
+    f2m_title: "Farm-to-Market Autonomous Coordination",
     f2m_sub: "Coordinates post-harvest logistics, freight transport booking, and APMC terminal price optimization.",
     mandi_comparison: "Regional APMC Mandi Net Realization Comparison",
     logistics_fleet: "Allocated Transport Logistics Fleet",
     dispatch_protocol: "Autonomous Dispatch Verification Protocol",
 
     // Seasonal Memory
-    kg_title: "Farm Memory & Seasonal Knowledge Graph (Module 6.4.13)",
+    kg_title: "Farm Memory & Seasonal Knowledge Graph",
     kg_sub: "Retains multi-season knowledge linking fields, crops, interventions, and yield outcomes for continuous AI learning.",
     graph_entities: "Graph Topology & Entities",
     historical_lessons: "Historical Lessons Learned (Multi-Season Intelligence)",
 
     // Omnichannel
-    omni_title: "Omnichannel Execution & IoT Hardware Orchestration (Sections 6.5 & 6.6)",
+    omni_title: "Omnichannel Execution & IoT Hardware Orchestration",
     omni_sub: "Direct MQTT pump/valve triggers, multilingual offline SMS/Voice advisories (Twilio), and human agronomist escalation.",
     iot_solenoid: "Smart Drip Solenoid & Pump MQTT Dispatcher",
     broadcast_mqtt: "Broadcast MQTT Hardware Command",
@@ -211,12 +211,12 @@ export const translations = {
     dashboard_nav: "Dashboard",
     login_btn: "Sign In / Login",
     logout_btn: "Sign Out",
-    hero_badge: "PS-6: Autonomous AI Farm-to-Field Advisory & Action Orchestration",
+    hero_badge: "Autonomous AI Farm-to-Field Advisory & Action Orchestration",
     hero_title: "Autonomous Precision Farming, Powered by Multi-Agent Intelligence",
     hero_sub: "AgriPilot turns fragmented IoT sensors, Open-Meteo satellite weather, and drone imagery into automated closed-loop field actions: precision irrigation, nutrient fertigation, pest containment, and APMC profit optimization.",
     launch_dashboard: "Launch Farm Dashboard",
     farmer_login_cta: "Farmer / Agronomist Portal",
-    explore_features: "Explore System Modules",
+    explore_features: "Explore System Capabilities",
     feature_1_title: "Closed-Loop Autonomous Cycle",
     feature_1_desc: "Senses, predicts, and executes irrigation and fertigation without manual guesswork or delayed interventions.",
     feature_2_title: "GIS Digital Twin & What-If Studio",
@@ -263,7 +263,7 @@ export const translations = {
 
   Hindi: {
     brand_sub: "खेत से मैदान तक स्वायत्त कृषि सलाहकार एवं कार्य समन्वय एजेंट्स",
-    ps6_badge: "PS-6 स्वायत्त AI",
+    ps6_badge: "स्वायत्त AI",
     india_hub: "🇮🇳 भारत कृषि-जलवायु क्षेत्र",
     run_cycle: "निर्णय चक्र शुरू करें",
     orchestrating: "प्रक्रिया जारी है...",
@@ -328,7 +328,7 @@ export const translations = {
     apply_decision: "यह निर्णय खेत पर लागू करें",
 
     // Lifecycle
-    lifecycle_title: "फसल जीवन चक्र व मासिक देखभाल इंटेलिजेंस (मॉड्यूल 6.4.6)",
+    lifecycle_title: "फसल जीवन चक्र व मासिक देखभाल इंटेलिजेंस",
     lifecycle_sub: "बुवाई से लेकर कटाई तक मौसम और मिट्टी के अनुसार बदलता हुआ खेती का रोडमैप।",
     lifecycle_progress: "फसल की प्रगति",
     days_after_sowing: "बुवाई के बाद के दिन",
@@ -343,7 +343,7 @@ export const translations = {
     care_tasks: "देखभाल कार्य सूची",
 
     // Pest Lab
-    pest_title: "कंप्यूटर विज़न कीट पहचान व सटीक स्प्रे सॉल्वर (मॉड्यूल 6.4.4)",
+    pest_title: "कंप्यूटर विज़न कीट पहचान व सटीक स्प्रे सॉल्वर",
     pest_sub: "ड्रोन और स्मार्टफोन फोटो से पत्तियों के रोग पहचानना और मौसम अनुसार सही दवा छिड़कने का समय बताना।",
     upload_photo: "पत्ती की फोटो अपलोड करें",
     sample_feeds: "नमूना रोग जांचें",
@@ -355,17 +355,17 @@ export const translations = {
     pre_harvest_int: "कटाई पूर्व सुरक्षित अंतराल (PHI)",
 
     // Rotation DAG
-    dag_title: "वैज्ञानिक फसल चक्र व DAG उत्तराधिकार इंजन (मॉड्यूल 6.4.3)",
+    dag_title: "वैज्ञानिक फसल चक्र व DAG उत्तराधिकार इंजन",
     dag_sub: "मिट्टी के पोषण में सुधार, पानी की उपलब्धता और बीमारी रोकने के आधार पर अगली फसल की सिफारिश।",
     standing_crop: "वर्तमान खड़ी फसल",
     water_budget_label: "अगली फसल हेतु उपलब्ध 90 दिन का जल बजट (ET₀ व नमी)",
     dag_rankings: "DAG एल्गोरिदम अनुसार अगली फसल की रैंकिंग",
     top_successor: "सर्वोत्तम अगली फसल",
     intercropping_title: "सह-फसली खेती व भूमि समतुल्य अनुपात (LER)",
-    matrix_title: "संदर्भ फसल उत्तराधिकार मैट्रिक्स (खंड 6.4.3)",
+    matrix_title: "संदर्भ फसल उत्तराधिकार मैट्रिक्स",
 
     // Mandi & Profit
-    mandi_title: "मंडी भाव पूर्वानुमान व फार्म लाभ अनुकूलक (मॉड्यूल 6.4.5 व 6.4.11)",
+    mandi_title: "मंडी भाव पूर्वानुमान व फार्म लाभ अनुकूलक",
     mandi_sub: "7-30 दिन का मंडी भाव पूर्वानुमान और PuLP गणितीय लाभ अनुकूलन मॉडल।",
     apmc_forecast: "30-दिवसीय मंडी भाव पूर्वानुमान",
     harvest_timing_advisory: "कटाई समय पर मंडी सलाह",
@@ -377,34 +377,34 @@ export const translations = {
     net_farm_profit: "शुद्ध मुनाफा (प्रति हेक्टेयर)",
 
     // Operations Planner
-    planner_title: "स्वायत्त फार्म संचालन एवं कार्य योजना (मॉड्यूल 6.4.10)",
+    planner_title: "स्वायत्त फार्म संचालन एवं कार्य योजना",
     planner_sub: "मौसम, मजदूर और मशीनों की उपलब्धता अनुसार दैनिक व साप्ताहिक कार्य सूची।",
     simulate_rain_btn: "बारिश के कारण योजना पुनः बनाएं",
     refresh_schedule: "कार्य सूची ताज़ा करें",
     weekly_schedule: "साप्ताहिक निष्पादनीय फार्म कार्य सूची",
 
     // Crisis
-    crisis_title: "फार्म संकट प्रतिक्रिया व आपातकालीन प्रबंधन (मॉड्यूल 6.4.9)",
+    crisis_title: "फार्म संकट प्रतिक्रिया व आपातकालीन प्रबंधन",
     crisis_sub: "जलभराव, गंभीर सूखा या अचानक रोग फैलने पर तुरंत चेतावनी और निवारण।",
     open_incidents: "सक्रिय संकट घटनाएं",
     rapid_mitigation: "त्वरित निवारण प्रोटोकॉल",
     sign_and_resolve: "समाधान स्वीकृत करें",
 
     // Farm to Market
-    f2m_title: "खेत से मंडी तक स्वायत्त लॉजिस्टिक्स (मॉड्यूल 6.4.12)",
+    f2m_title: "खेत से मंडी तक स्वायत्त लॉजिस्टिक्स",
     f2m_sub: "कटाई तैयारी, मालवाहक वाहन बुकिंग और निकटवर्ती मंडियों में शुद्ध लाभ की तुलना।",
     mandi_comparison: "क्षेत्रीय APMC मंडियों में शुद्ध आय की तुलना",
     logistics_fleet: "आवंटित परिवहन वाहन",
     dispatch_protocol: "स्वायत्त मंडी प्रेषण प्रोटोकॉल",
 
     // Seasonal Memory
-    kg_title: "फार्म मेमोरी व मौसमी ज्ञान ग्राफ (मॉड्यूल 6.4.13)",
+    kg_title: "फार्म मेमोरी व मौसमी ज्ञान ग्राफ",
     kg_sub: "पिछले 5 मौसमों के अनुभव, बीमारी के उपाय और उपज रिकॉर्ड से भविष्य की सलाह को बेहतर बनाना।",
     graph_entities: "ज्ञान नेटवर्क एवं तत्व",
     historical_lessons: "विगत मौसमों से सीखे गए अनुभव",
 
     // Omnichannel
-    omni_title: "ओमनीचैनल क्रियान्वयन व IoT हार्डवेयर नियंत्रण (खंड 6.5 व 6.6)",
+    omni_title: "ओमनीचैनल क्रियान्वयन व IoT हार्डवेयर नियंत्रण",
     omni_sub: "स्मार्ट ड्रिप वाल्व को सीधा कमांड, बिना इंटरनेट साधारण फोन पर हिंदी में SMS व कृषि वैज्ञानिक परामर्श।",
     iot_solenoid: "स्मार्ट ड्रिप वाल्व एवं पंप MQTT नियंत्रण",
     broadcast_mqtt: "MQTT हार्डवेयर कमांड भेजें",
@@ -471,12 +471,12 @@ export const translations = {
     dashboard_nav: "डैशबोर्ड",
     login_btn: "लॉगिन करें",
     logout_btn: "लॉगआउट",
-    hero_badge: "PS-6: स्वायत्त AI खेत-से-मैदान कृषि सलाहकार व समन्वय प्रणाली",
+    hero_badge: "स्वायत्त AI खेत-से-मैदान कृषि सलाहकार व समन्वय प्रणाली",
     hero_title: "मल्टी-एजेंट AI द्वारा संचालित स्वायत्त सटीक खेती",
     hero_sub: "AgriPilot मिट्टी के IoT सेंसर, उपग्रह मौसम और ड्रोन तस्वीरों को स्वतः सटीक सिंचाई, पोषक खाद, कीट नियंत्रण और मंडी लाभ में बदलता है।",
     launch_dashboard: "फार्म डैशबोर्ड शुरू करें",
     farmer_login_cta: "किसान व वैज्ञानिक पोर्टल",
-    explore_features: "सिस्टम मॉड्यूल देखें",
+    explore_features: "सिस्टम क्षमताएं देखें",
     feature_1_title: "क्लोज्ड-लूप स्वायत्त निर्णय चक्र",
     feature_1_desc: "बिना मानवीय देरी और अनुमान के मिट्टी की नमी और मौसम अनुसार स्वतः सिंचाई व खाद निष्पादित करता है।",
     feature_2_title: "GIS डिजिटल ट्विन व सिमुलेशन",

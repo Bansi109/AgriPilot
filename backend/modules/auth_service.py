@@ -45,6 +45,15 @@ REGISTERED_CONTACTS = {
         "region": "Agricultural Research & Extension",
         "crops": ["Multi-Crop Agronomic Supervision"]
     },
+    "9812345678": {
+        "name": "Anand Kumar",
+        "role": "Extension Officer (KVK)",
+        "phone": "+91 98123 45678",
+        "field_id": "KVK-INDORE-DISTRICT",
+        "avatar": "📋",
+        "region": "Indore District KVK Extension",
+        "crops": ["District Extension Supervision"]
+    },
     "9123456780": {
         "name": "Sardar Balwinder Singh",
         "role": "Progressive Farmer",
@@ -268,7 +277,18 @@ class AuthService:
         })
 
         if role:
-            user_info["role"] = "Senior Agronomist (ICAR)" if role == "Agronomist" else "Progressive Farmer"
+            if role == "Extension":
+                user_info["role"] = "Extension Officer (KVK)"
+                if "Farmer" in user_info.get("name", ""):
+                    user_info["name"] = "Anand Kumar"
+                    user_info["avatar"] = "📋"
+                    user_info["region"] = "Indore KVK Extension"
+            elif role == "Agronomist":
+                user_info["role"] = "Senior Agronomist (ICAR)"
+                if "Farmer" in user_info.get("name", ""):
+                    user_info["name"] = "Dr. R. K. Verma"
+                    user_info["avatar"] = "🔬"
+                    user_info["region"] = "ICAR Agricultural Research"
 
         token = f"AGRI-{secrets.token_hex(16)}"
 

@@ -64,7 +64,7 @@ export default function DigitalTwinMap({
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Globe size={20} color="var(--emerald-500)" />
               <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                {language === 'Hindi' ? 'फार्म डिजिटल ट्विन एवं बहु-क्षेत्र GIS लेआउट (मॉड्यूल 6.4.7)' : 'Farm Digital Twin & Multi-Plot GIS Layout (Module 6.4.7)'}
+                {language === 'Hindi' ? 'फार्म डिजिटल ट्विन एवं बहु-क्षेत्र GIS लेआउट' : 'Farm Digital Twin & Multi-Plot GIS Layout'}
               </h2>
             </div>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '2px' }}>

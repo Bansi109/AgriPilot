@@ -45,7 +45,6 @@ export default function HomePage({
       icon: <Cpu size={26} color="var(--emerald-400)" />,
       title: t.feature_1_title,
       desc: t.feature_1_desc,
-      tag: "Module 6.8",
       accent: "var(--emerald-400)"
     },
     {
@@ -53,7 +52,6 @@ export default function HomePage({
       icon: <Globe size={26} color="var(--cyan-400)" />,
       title: t.feature_2_title,
       desc: t.feature_2_desc,
-      tag: "Module 6.4.7",
       accent: "var(--cyan-400)"
     },
     {
@@ -61,7 +59,6 @@ export default function HomePage({
       icon: <Bug size={26} color="var(--rose-500)" />,
       title: t.feature_3_title,
       desc: t.feature_3_desc,
-      tag: "Module 6.4.4",
       accent: "var(--rose-500)"
     },
     {
@@ -69,7 +66,6 @@ export default function HomePage({
       icon: <TrendingUp size={26} color="var(--amber-400)" />,
       title: t.feature_4_title,
       desc: t.feature_4_desc,
-      tag: "Module 6.4.11",
       accent: "var(--amber-400)"
     },
     {
@@ -77,7 +73,6 @@ export default function HomePage({
       icon: <GitFork size={26} color="var(--purple-400)" />,
       title: t.feature_5_title,
       desc: t.feature_5_desc,
-      tag: "Module 6.4.3",
       accent: "var(--purple-400)"
     },
     {
@@ -85,7 +80,6 @@ export default function HomePage({
       icon: <Radio size={26} color="var(--lime-400)" />,
       title: t.feature_6_title,
       desc: t.feature_6_desc,
-      tag: "Sections 6.5 & 6.6",
       accent: "var(--lime-400)"
     }
   ];
@@ -471,9 +465,6 @@ export default function HomePage({
                   }}>
                     {f.icon}
                   </div>
-                  <span className="badge badge-purple" style={{ fontSize: '0.68rem' }}>
-                    {f.tag}
-                  </span>
                 </div>
 
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '8px' }}>
@@ -485,7 +476,7 @@ export default function HomePage({
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem', fontWeight: 700, color: f.accent }}>
-                <span>Launch Interactive Module</span>
+                <span>{language === 'Hindi' ? 'फ़ीचर स्टूडियो देखें' : 'Launch Feature Studio'}</span>
                 <ChevronRight size={14} />
               </div>
             </div>
@@ -588,7 +579,7 @@ export default function HomePage({
         flexWrap: 'wrap',
         gap: '12px'
       }}>
-        <span>AgriPilot — PS-6: Autonomous Farm-to-Field Advisory & Action Orchestration Agents</span>
+        <span>AgriPilot — Autonomous Farm-to-Field Advisory & Action Orchestration Agents</span>
         <span>🇮🇳 Built for Indian Agriculture • Open-Meteo & PuLP Optimized</span>
       </footer>
 

@@ -137,7 +137,7 @@ export default function LoginPage({
     }
   };
 
-  // Kisan ID Login
+  // Kisan ID / Role Login
   const handleIdLogin = (e) => {
     e?.preventDefault();
     if (!kisanId) {
@@ -145,15 +145,35 @@ export default function LoginPage({
       return;
     }
 
-    const isAgronomist = selectedRole === 'Agronomist' || kisanId.toLowerCase().includes('verma');
-    const userData = {
-      name: isAgronomist ? 'Dr. R. K. Verma' : 'Ramesh Patel',
-      role: isAgronomist ? 'Senior Agronomist (ICAR)' : 'Progressive Farmer',
-      phone: '+91 98765 43210',
-      avatar: isAgronomist ? '🔬' : '👨‍🌾',
-      field_id: 'FIELD-NORTH-01',
-      region: 'Indore (MP)'
-    };
+    let userData;
+    if (selectedRole === 'Extension' || kisanId.toLowerCase().includes('anand')) {
+      userData = {
+        name: 'Anand Kumar',
+        role: 'Extension Officer (KVK)',
+        phone: '+91 98123 45678',
+        avatar: '📋',
+        field_id: 'KVK-INDORE-DISTRICT',
+        region: 'Indore District KVK Extension'
+      };
+    } else if (selectedRole === 'Agronomist' || kisanId.toLowerCase().includes('verma')) {
+      userData = {
+        name: 'Dr. R. K. Verma',
+        role: 'Senior Agronomist (ICAR)',
+        phone: '+91 94250 88712',
+        avatar: '🔬',
+        field_id: 'ALL-ZONES',
+        region: 'Agricultural Research & Extension'
+      };
+    } else {
+      userData = {
+        name: 'Ramesh Patel',
+        role: 'Progressive Farmer',
+        phone: '+91 98765 43210',
+        avatar: '👨‍🌾',
+        field_id: 'FIELD-NORTH-01',
+        region: 'Indore (MP)'
+      };
+    }
 
     onLogin(userData);
   };
@@ -655,6 +675,27 @@ export default function LoginPage({
               </div>
             </div>
             <span className="badge badge-emerald" style={{ fontSize: '0.65rem' }}>Select</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleQuickSelectContact('9812345678', 'Extension')}
+            className="btn btn-secondary"
+            style={{
+              width: '100%',
+              justifyContent: 'space-between',
+              padding: '8px 12px',
+              fontSize: '0.8rem'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '1.1rem' }}>📋</span>
+              <div style={{ textAlign: 'left' }}>
+                <strong style={{ color: 'var(--text-primary)', display: 'block' }}>Anand Kumar (+91 98123 45678)</strong>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Extension Officer • KVK Indore</span>
+              </div>
+            </div>
+            <span className="badge badge-cyan" style={{ fontSize: '0.65rem' }}>Select</span>
           </button>
 
           <button

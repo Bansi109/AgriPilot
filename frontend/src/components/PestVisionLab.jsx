@@ -23,19 +23,21 @@ export default function PestVisionLab({ weatherData, language = 'Hindi' }) {
   const [uploadedFile, setUploadedFile] = useState(null);
 
   const presets = language === 'Hindi' ? [
-    { key: 'Yellow_Rust', label: 'पीला रतुआ (गेहूं)', crop: 'Wheat', icon: '🌾' },
-    { key: 'Early_Blight', label: 'अगेती झुलसा (टमाटर)', crop: 'Tomato', icon: '🍅' },
-    { key: 'Late_Blight', label: 'पछेती झुलसा (आलू)', crop: 'Potato', icon: '🥔' },
-    { key: 'Powdery_Mildew', label: 'चूर्णी फफूंद (चना)', crop: 'Chickpea', icon: '🌱' },
+    { key: 'Early_Blight', label: 'अगेती झुलसा (टमाटर/आलू)', crop: 'Tomato/Potato', icon: '🍅' },
+    { key: 'Late_Blight', label: 'पछेती झुलसा (आलू/टमाटर)', crop: 'Potato/Tomato', icon: '🥔' },
+    { key: 'Powdery_Mildew', label: 'चूर्णी फफूंद (चना/सरसों)', crop: 'Chickpea/Mustard', icon: '🌱' },
     { key: 'Fall_Armyworm', label: 'फॉल आर्मीवॉर्म (मक्का)', crop: 'Maize', icon: '🌽' },
-    { key: 'Healthy', label: 'स्वस्थ हरी पत्ती', crop: 'All Crops', icon: '✨' }
+    { key: 'Healthy_Citrus', label: 'स्वस्थ नीबू/संतरा पत्ती', crop: 'Citrus', icon: '🍋' },
+    { key: 'Healthy', label: 'स्वस्थ हरी पत्ती', crop: 'All Crops', icon: '✨' },
+    { key: 'Yellow_Rust', label: 'पीला रतुआ (गेहूं)', crop: 'Wheat', icon: '🌾' }
   ] : [
-    { key: 'Yellow_Rust', label: 'Yellow / Stripe Rust', crop: 'Wheat', icon: '🌾' },
-    { key: 'Early_Blight', label: 'Early Blight (Alternaria)', crop: 'Tomato', icon: '🍅' },
-    { key: 'Late_Blight', label: 'Late Blight (Phytophthora)', crop: 'Potato', icon: '🥔' },
-    { key: 'Powdery_Mildew', label: 'Powdery Mildew', crop: 'Chickpea', icon: '🌱' },
+    { key: 'Early_Blight', label: 'Early Blight (Alternaria)', crop: 'Tomato/Potato', icon: '🍅' },
+    { key: 'Late_Blight', label: 'Late Blight (Phytophthora)', crop: 'Potato/Tomato', icon: '🥔' },
+    { key: 'Powdery_Mildew', label: 'Powdery Mildew', crop: 'Chickpea/Mustard', icon: '🌱' },
     { key: 'Fall_Armyworm', label: 'Fall Armyworm (FAW)', crop: 'Maize', icon: '🌽' },
-    { key: 'Healthy', label: 'Healthy Green Foliage', crop: 'All Crops', icon: '✨' }
+    { key: 'Healthy_Citrus', label: 'Healthy Citrus Foliage', crop: 'Citrus', icon: '🍋' },
+    { key: 'Healthy', label: 'Healthy Green Foliage', crop: 'All Crops', icon: '✨' },
+    { key: 'Yellow_Rust', label: 'Yellow / Stripe Rust', crop: 'Wheat', icon: '🌾' }
   ];
 
   const runAnalysis = async (presetKey, fileObj = null) => {
@@ -77,6 +79,26 @@ export default function PestVisionLab({ weatherData, language = 'Hindi' }) {
       setUploadedFile(file);
       runAnalysis(null, file);
     }
+  };
+
+  const hindiDiagnosisMap = {
+    Early_Blight: 'अगेती झुलसा रोग (Alternaria solani)',
+    Late_Blight: 'पछेती झुलसा रोग (Phytophthora infestans)',
+    Powdery_Mildew: 'चूर्णी फफूंद रोग (Erysiphe spp.)',
+    Fall_Armyworm: 'फॉल आर्मीवॉर्म कीट प्रकोप (Spodoptera frugiperda)',
+    Healthy_Citrus: 'स्वस्थ नीबू/संतरा पत्ती (Healthy Citrus Foliage)',
+    Healthy: 'स्वस्थ फसल पत्ती (Healthy Foliage)',
+    Yellow_Rust: 'पीला रतुआ रोग (Puccinia striiformis)'
+  };
+
+  const hindiSymptomsMap = {
+    Early_Blight: 'पत्तियों पर भूरे-काले वृत्ताकार चक्रदार धब्बे (टारगेट बोर्ड पैटर्न) और पीला घेरा पाया गया है।',
+    Late_Blight: 'पत्तियों के किनारों पर नमी से भरे काले-भूरे धब्बे और अत्यधिक आर्द्रता में सफेद फफूंद पाई गई है।',
+    Powdery_Mildew: 'पत्तियों की ऊपरी सतह पर सफेद पाउडर जैसी फफूंद की परत पाई गई है, जिससे पत्तियां सूख रही हैं।',
+    Fall_Armyworm: 'पत्तियों के बीच में सुराख व कटाव और पत्तियों की पोंगली में दानेदार उत्सर्जित Frass पाया गया है।',
+    Healthy_Citrus: 'चमकदार गहरी हरी पत्तियां, पूर्ण मोमी परत और किसी भी प्रकार के साइट्रस कैंकर या कीट के लक्षण नहीं हैं।',
+    Healthy: 'समान गहरा हरा रंग, स्वस्थ क्लोरोफिल संरचना और कोई सक्रिय बीमारी या धब्बे नहीं पाए गए।',
+    Yellow_Rust: 'पत्तियों की नसों पर पीले-नारंगी रंग की धारियों वाले दानेदार फफोले पाए गए हैं।'
   };
 
   const solver = visionResult?.spray_window_solver;
@@ -177,7 +199,7 @@ export default function PestVisionLab({ weatherData, language = 'Hindi' }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                  {language === 'Hindi' && visionResult.diagnosis_key === 'Yellow_Rust' ? 'पीला रतुआ रोग (Puccinia striiformis)' : visionResult.diagnosis}
+                  {language === 'Hindi' ? (hindiDiagnosisMap[visionResult.diagnosis_key] || visionResult.diagnosis) : visionResult.diagnosis}
                 </span>
                 <span className="badge badge-cyan">
                   {language === 'Hindi' ? `सटीकता: ${Math.round(visionResult.confidence_score * 100)}%` : `Confidence: ${Math.round(visionResult.confidence_score * 100)}%`}
@@ -185,9 +207,7 @@ export default function PestVisionLab({ weatherData, language = 'Hindi' }) {
               </div>
 
               <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
-                {language === 'Hindi' && visionResult.diagnosis_key === 'Yellow_Rust'
-                  ? "पत्तियों की नसों पर पीले-नारंगी रंग की धारियों वाले दानेदार फफोले पाए गए हैं, जिससे प्रकाश संश्लेषण में बाधा आ रही है।"
-                  : visionResult.symptoms}
+                {language === 'Hindi' ? (hindiSymptomsMap[visionResult.diagnosis_key] || visionResult.symptoms) : visionResult.symptoms}
               </p>
 
               <div style={{ background: 'var(--bg-inner-box)', padding: '12px', borderRadius: 'var(--radius-sm)', fontSize: '0.82rem', border: '1px solid var(--border-glass)' }}>

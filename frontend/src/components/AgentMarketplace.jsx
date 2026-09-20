@@ -69,7 +69,7 @@ export default function AgentMarketplace({ language = 'Hindi' }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Bot size={22} color="var(--emerald-500)" />
               <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                {language === 'Hindi' ? 'अनुकूलनीय कृषि विशेषज्ञ एजेंट मार्केटप्लेस (मॉड्यूल 6.4.8)' : 'Adaptive Farm Agent Marketplace (Module 6.4.8)'}
+                {language === 'Hindi' ? 'अनुकूलनीय कृषि विशेषज्ञ एजेंट मार्केटप्लेस' : 'Adaptive Farm Agent Marketplace'}
               </h2>
             </div>
             <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
@@ -135,7 +135,7 @@ export default function AgentMarketplace({ language = 'Hindi' }) {
                         {language === 'Hindi' ? (agentNamesHindi[key] || ag.agent) : ag.agent}
                       </h3>
                       <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                        {language === 'Hindi' ? 'सक्रिय AI मॉड्यूल' : 'Specialist Module'} • {ag.timestamp?.split(' ')[1] || 'Live'}
+                        {language === 'Hindi' ? 'सक्रिय AI एजेंट' : 'Specialist Agent'} • {ag.timestamp?.split(' ')[1] || 'Live'}
                       </span>
                     </div>
                   </div>

@@ -74,6 +74,16 @@ PATHOLOGY_PROFILES = {
         "phi_days": 0,
         "optimal_infection_temp": (0, 50),
         "optimal_infection_rh": (0, 100)
+    },
+    "Healthy_Citrus": {
+        "common_name": "Healthy Citrus Foliage",
+        "crops": ["Citrus", "Lemon", "Orange", "Mandarin"],
+        "symptoms": "Glossy deep green citrus foliage, intact waxy cuticle with zero melanose, citrus canker, or leaf miner trails.",
+        "recommended_treatment": "No chemical spray required. Maintain routine micro-nutrient zinc & manganese spray schedule.",
+        "organic_treatment": "Preventative neem oil emulsion (0.5%) + bio-fungicide drench.",
+        "phi_days": 0,
+        "optimal_infection_temp": (0, 50),
+        "optimal_infection_rh": (0, 100)
     }
 }
 
@@ -134,7 +144,7 @@ class PestVisionPipeline:
         if preset_pathology and preset_pathology in PATHOLOGY_PROFILES:
             diagnosis_key = preset_pathology
             confidence = 0.94
-            if diagnosis_key == "Healthy":
+            if diagnosis_key in ["Healthy", "Healthy_Citrus"]:
                 severity_pct = 0.5
             elif severity_pct < 5.0:
                 severity_pct = 22.8 if diagnosis_key == "Late_Blight" else 16.4
@@ -206,7 +216,7 @@ class PestVisionPipeline:
         Constraint 3: Ambient temp < 30.0 °C (volatilization and crop scorch prevention)
         Constraint 4: Days until harvest >= Pre-Harvest Interval (PHI) (chemical residue compliance)
         """
-        if diagnosis_key == "Healthy":
+        if diagnosis_key in ["Healthy", "Healthy_Citrus"]:
             return {
                 "can_spray_now": False,
                 "overall_status": "NO SPRAY REQUIRED (Crop is healthy)",

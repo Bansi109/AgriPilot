@@ -17,14 +17,16 @@ export default function FarmToMarketView({ field, language }) {
   const [f2mData, setF2mData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const t = translations[language] || translations.English;
+  const [toastMsg, setToastMsg] = useState(null);
 
   const fetchF2M = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/farm-to-market?crop=${field?.crop || 'Wheat'}&maturity_pct=95.0`);
+      const res = await fetch(`/api/farm-to-market?crop=${field?.crop || 'Wheat'}&maturity_pct=95.0&_t=${Date.now()}`);
       const data = await res.json();
       setF2mData(data);
+      setToastMsg(language === 'Hindi' ? 'मंडी व लॉजिस्टिक्स डेटा ताज़ा हो गया!' : 'Logistics & Mandi Data Refreshed!');
+      setTimeout(() => setToastMsg(null), 2500);
     } catch (e) {
       console.error(e);
     } finally {
@@ -57,6 +59,11 @@ export default function FarmToMarketView({ field, language }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {toastMsg && (
+              <span className="badge badge-emerald" style={{ fontSize: '0.74rem', animation: 'fadeIn 0.2s ease' }}>
+                ✓ {toastMsg}
+              </span>
+            )}
             <span className="badge badge-emerald">
               {f2mData?.harvest_readiness_status || 'Ready for Immediate Harvest'}
             </span>
